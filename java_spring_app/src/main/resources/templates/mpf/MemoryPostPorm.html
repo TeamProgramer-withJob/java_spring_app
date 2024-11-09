@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::body})}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投稿フォーム</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Ending Company</h1>
+        <nav>
+            <ul>
+                <li>トップ</li>
+                <li>マイページ</li>
+                <li>私の思い出</li>
+                <li>ユーザー一覧</li>
+                <li>思い出の保存</li>
+            </ul>
+        </nav>
+        <button class="logout-button">ログアウト</button>
+    </header>
+
+    <main>
+        <h2>投稿フォーム</h2>
+        <form>
+            <label for="title">タイトル</label>
+            <input type="text" id="title" placeholder="入力してください">
+
+            <label for="content">本文</label>
+            <textarea id="content" placeholder="入力してください"></textarea>
+
+            <label for="tags">タグ</label>
+            <input type="text" id="tags" placeholder="入力してください">
+
+            <label for="image">画像投稿</label>
+            <input type="file" id="image" class="file-input">
+
+            <label for="video">動画投稿</label>
+            <input type="file" id="video" class="file-input">
+
+            <label>表示方法</label>
+            <div class="display-options">
+                <label><input type="radio" name="display" value="public"> 公開する</label>
+                <label><input type="radio" name="display" value="followers" checked> フォロワーのみ</label>
+            </div>
+
+            <button type="submit" class="submit-button">保存</button>
+        </form>
+    </main>
+</body>
+</html>

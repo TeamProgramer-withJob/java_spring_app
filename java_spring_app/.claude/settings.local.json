@@ -120,7 +120,9 @@
       "Bash(ssh-keyscan:*)",
       "Bash(~/.ssh/known_hosts)",
       "Bash(ssh-keygen:*)",
-      "Bash(git remote set-url:*)"
+      "Bash(git remote set-url:*)",
+      "Bash(./gradlew bootRun)",
+      "Bash(./gradlew:*)"
     ],
     "deny": [],
     "defaultMode": "acceptEdits",

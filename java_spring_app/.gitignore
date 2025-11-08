@@ -39,6 +39,7 @@ out/
 ### AI Development ###
 AI_INSTRUCTIONS.md
 .claude/
+.serena/logs/
 
 ### OS specific ###
 # Windows

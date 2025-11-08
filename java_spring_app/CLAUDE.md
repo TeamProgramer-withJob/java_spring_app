@@ -7,21 +7,27 @@
 ## 🛠️ **技術スタック**
 
 ### **フレームワーク・ライブラリ**
-- **Spring Boot**: 2.5.6 (メインフレームワーク)
-- **MyBatis**: 2.2.0 (データベースマッピング)
+- **Spring Boot**: 3.2.1 (メインフレームワーク)
+- **MyBatis**: 3.0.3 (データベースマッピング)
 - **Thymeleaf**: テンプレートエンジン
 - **Spring Security**: 認証・認可
 - **Lombok**: コード生成（getter/setter等）
 
 ### **言語・環境**
-- **Java**: 11 (プロジェクト標準)
-- **Gradle**: 依存関係管理・ビルドツール
+- **Java**: 21 (プロジェクト標準)
+- **Gradle**: 8.5 (依存関係管理・ビルドツール)
 - **H2 Database**: インメモリデータベース (開発環境)
 
 ### **開発ツール**
 - **Spring Boot DevTools**: ホットリロード
 - **Spring Boot Test**: 自動テストフレームワーク
 - **Spring Security Test**: セキュリティテスト
+
+### **重要な移行事項 (Spring Boot 3.x)**
+- **Jakarta EE**: `javax.*` パッケージから `jakarta.*` への移行
+- **Spring Security 6**: SecurityFilterChain ベースの設定推奨
+- **Java 17以上必須**: Java 21を使用
+- **Thymeleaf Extras**: springsecurity5 → springsecurity6
 
 ## 📋 **コーディング規約**
 

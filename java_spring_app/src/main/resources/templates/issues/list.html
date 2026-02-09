@@ -13,6 +13,7 @@
   <tr>
     <th>#</th>
     <th>概要</th>
+    <th>画像</th>
   </tr>
   </thead>
   <tbody>
@@ -22,6 +23,9 @@
       <a href="./detail.html" th:href="@{/issues/{issueId}(issueId=${issue.id})}" th:text="${issue.summary}">
         (summary)
       </a>
+    </td>
+    <td>
+      <p th:text="${issue.fullpath}">(fullpath)</p>
     </td>
   </tr>
   </tbody>

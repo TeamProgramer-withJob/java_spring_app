@@ -11,5 +11,8 @@
   <h2 th:text="${issue.summary}">(summary)</h2>
   <p th:text="${issue.description}">(description)</p>
 </div>
+<div th:if="${not #strings.isEmpty(issue.fullpath)}">
+  <img th:src="@{/issues/image/{issueId}(issueId=${issue.id})}" width="240" alt="画像" />
+</div>
 </body>
 </html>

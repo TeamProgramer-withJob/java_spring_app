@@ -1,8 +1,11 @@
-package com.example.its.domain.issue;
+package com.example.its.domain.issue.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.example.its.domain.issue.model.Issue2Form;
+import com.example.its.domain.issue.repository.IssueRepository;
 
 import java.util.List;
 
@@ -12,16 +15,16 @@ public class IssueService {
 
     private final IssueRepository issueRepository;
 
-    public List<IssueEntity> findAll() {
+    public List<Issue2Form> findAll() {
         return issueRepository.findAll();
     }
 
     @Transactional
-    public void create(String summary, String description) {
-        issueRepository.insert(summary, description);
+    public void create(String summary, String description, String fullpath, int mediaType) {
+        issueRepository.insert(summary, description, fullpath, mediaType);
     }
 
-    public IssueEntity findById(long issueId) {
+    public Issue2Form findById(long issueId) {
         return issueRepository.findById(issueId);
     }
 }

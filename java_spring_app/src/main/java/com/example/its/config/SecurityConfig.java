@@ -38,7 +38,7 @@ public class SecurityConfig {
             login.loginPage("/login")
                  .loginProcessingUrl("/authenticateTheUser")
 //                 .failureHandler(new WebAuthFailedHandler())
-                 .defaultSuccessUrl("/issues")
+                 .defaultSuccessUrl("/issues?lang=ja")
                  .permitAll();
         });
 

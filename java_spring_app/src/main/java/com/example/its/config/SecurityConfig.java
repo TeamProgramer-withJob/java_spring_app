@@ -2,6 +2,7 @@ package com.example.its.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -11,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
+import org.springframework.security.web.util.matcher.AnyRequestMatcher;
 
 import com.example.its.WebAuthFailedHandler;
 
@@ -40,6 +43,14 @@ public class SecurityConfig {
 //                 .failureHandler(new WebAuthFailedHandler())
                  .defaultSuccessUrl("/issues?lang=ja")
                  .permitAll();
+        });
+        
+        http.logout(logout -> {
+        	logout.logoutRequestMatcher(PathPatternRequestMatcher.pathPattern(HttpMethod.GET, "/logout"))
+        	      //.logoutUrl("/logout")
+        	      .logoutSuccessUrl("/login?logout")
+        	      .invalidateHttpSession(true)
+        	      .deleteCookies("web_service_its");
         });
 
         String[] permittedUrls = {"/css/**", "/webjars/**","/h2-console/**","/signup/**","/test/**","/error/**","/access/denied/**"};

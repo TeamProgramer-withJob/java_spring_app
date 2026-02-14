@@ -52,6 +52,8 @@ public class IssueController {
     		}
     	}
     	model.addAttribute("issueList", entities);
+        model.addAttribute("userName", "鍾志華");
+        model.addAttribute("gender", "male");
 
     	return "issues/list";
     }

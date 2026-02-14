@@ -1,0 +1,5 @@
+<div th:fragment="admin(id, name)">
+    <p th:text="${id}">id</p>
+    <div th:replace="${name}">default user name in the fragment admin(id, name)</div>
+    <!-- div th:text="${name}">default user name</div -->
+</div>

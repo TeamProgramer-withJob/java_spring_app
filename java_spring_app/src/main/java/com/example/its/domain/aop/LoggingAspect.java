@@ -17,7 +17,7 @@ public class LoggingAspect {
 		Object result = joinPoint.proceed();
 		
 		final long ended = System.currentTimeMillis();
-		System.out.printf("INFO: %s() was executed in %d %s.\n", joinPoint.getSignature().getName(), (ended - started), logger.unit());
+		//System.out.printf("INFO: %s() was executed in %d %s.\n", joinPoint.getSignature().getName(), (ended - started), logger.unit());
 		
 		return result;
 	}

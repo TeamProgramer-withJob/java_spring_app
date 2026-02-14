@@ -1,24 +1,35 @@
 package com.example.its.domain.inquiry;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
-@Transactional
+@RequiredArgsConstructor
 public class InquiryService {
-    private final InquiryMapper mapper;
+    private final InquiryRepository inquiryRepository;
 
-    public InquiryService(InquiryMapper mapper) {
-        this.mapper = mapper;
+    public List<InquiryEntity> findAll() {
+        return inquiryRepository.findAll();
     }
 
-    public Inquiry save(Inquiry inquiry) {
-        mapper.insert(inquiry); // useGeneratedKeys で inquiry.id に採番が入る
-        return inquiry;
-    }
+    @Transactional
+public void create(String name, String email, String subject, String message) {
+    InquiryEntity inquiry = new InquiryEntity();
+    inquiry.setName(name);
+    inquiry.setEmail(email);
+    inquiry.setSubject(subject);
+    inquiry.setMessage(message);
 
-    public List<Inquiry> findAll() {
-        return mapper.findAll();
+    inquiryRepository.insert(inquiry);
+
+    // ここで inquiry.getId() に AUTO_INCREMENT の値が入ります（DB側が対応していれば）
+}
+
+
+    public InquiryEntity findById(long inquiryId) {
+        return inquiryRepository.findById(inquiryId);
     }
 }

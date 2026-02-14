@@ -6,7 +6,7 @@
 </head>
 <body class="container mt-4">
     <h1>お問い合わせ</h1>
-    <form th:action="@{/contact}" th:object="${inquiry}" method="post">
+    <form th:action="@{/inquiries}" th:object="${inquiryForm}" method="post">
         <div class="mb-3">
             <label>名前</label>
             <input type="text" th:field="*{name}" class="form-control" required>

@@ -5,5 +5,5 @@ insert into issues (summary, description) values ('画面Cが遅い', '早くし
 insert into users (username, password) values ('tom', 'password');
 insert into users (username, password) values ('bob', 'password');
 
-insert into inquiry(name, email, subject, message)
+insert into inquiries (name, email, subject, message)
 values ('テスト太郎', 'test@example.com', '初回テスト', 'こんにちは');

@@ -16,18 +16,14 @@ public class InquiryService {
     }
 
     @Transactional
-public void create(String name, String email, String subject, String message) {
-    InquiryEntity inquiry = new InquiryEntity();
-    inquiry.setName(name);
-    inquiry.setEmail(email);
-    inquiry.setSubject(subject);
-    inquiry.setMessage(message);
-
-    inquiryRepository.insert(inquiry);
-
-    // ここで inquiry.getId() に AUTO_INCREMENT の値が入ります（DB側が対応していれば）
-}
-
+    public void create(String name, String email, String subject, String message) {
+        InquiryEntity inquiry = new InquiryEntity();
+        inquiry.setName(name);
+        inquiry.setEmail(email);
+        inquiry.setSubject(subject);
+        inquiry.setMessage(message);
+        inquiryRepository.insert(inquiry);
+    }
 
     public InquiryEntity findById(long inquiryId) {
         return inquiryRepository.findById(inquiryId);

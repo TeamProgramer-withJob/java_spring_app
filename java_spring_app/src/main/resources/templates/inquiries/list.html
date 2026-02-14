@@ -17,13 +17,12 @@
   </tr>
   </thead>
   <tbody>
-  <tr th:each="inquiry : ${inquiryList}">
-      <td th:text="${inquiry.id}"></td>
-      <td th:text="${inquiry.subject}"></td>
-      <td th:text="${inquiry.message}"></td>
-  </tr>
+    <tr th:each="inquiry : ${inquiryList}">
+        <td th:text="${inquiry.id}"></td>
+        <td th:text="${inquiry.subject}"></td>
+        <td th:text="${inquiry.message}"></td>
+    </tr>
   </tbody>
-
 </table>
 </body>
 </html>

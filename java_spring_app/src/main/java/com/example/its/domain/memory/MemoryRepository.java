@@ -39,6 +39,18 @@ public interface MemoryRepository {
             """)
     Optional<MemoryEntity> findById(Long id);
 
+    /** 投稿者IDで思い出一覧を取得する（マイページ用・BLOBなし） */
+    @Select("""
+            SELECT m.id, m.cemetery_id, m.author_id,
+                   u.display_name AS author_display_name,
+                   m.title, m.body, m.image_content_type, m.visibility, m.created_at
+            FROM memories m
+            JOIN users u ON m.author_id = u.id
+            WHERE m.author_id = #{authorId}
+            ORDER BY m.created_at DESC
+            """)
+    List<MemoryEntity> findByAuthorId(Long authorId);
+
     /** 画像バイナリ取得専用（コントローラーの画像配信エンドポイント用）
      *  jdbcType=VARBINARY を指定して SQLite JDBC の getBytes() を使わせる */
     @Results({

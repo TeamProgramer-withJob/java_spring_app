@@ -24,6 +24,13 @@ public class MemoryService {
     }
 
     /**
+     * 投稿者IDで思い出一覧を取得する（マイページ用）。
+     */
+    public List<MemoryEntity> findByAuthorId(Long authorId) {
+        return memoryRepository.findByAuthorId(authorId);
+    }
+
+    /**
      * IDで思い出を取得する。見つからない場合は例外をスローする。
      */
     public MemoryEntity findById(Long id) {

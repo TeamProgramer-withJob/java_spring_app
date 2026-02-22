@@ -30,6 +30,13 @@ public class CemeteryService {
     }
 
     /**
+     * オーナーIDで霊園一覧を取得する（マイページ用）。
+     */
+    public List<CemeteryEntity> findByOwnerId(Long ownerId) {
+        return cemeteryRepository.findByOwnerId(ownerId);
+    }
+
+    /**
      * 新しい霊園ページを作成する。
      */
     @Transactional

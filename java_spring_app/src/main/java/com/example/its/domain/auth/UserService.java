@@ -14,6 +14,14 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     /**
+     * IDでユーザーを取得する。見つからない場合は例外をスローする。
+     */
+    public User findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ユーザーが見つかりません (id=" + id + ")"));
+    }
+
+    /**
      * 新規会員を登録する。
      * ユーザー名・メールアドレスの重複チェックを行い、パスワードをエンコードして保存する。
      *

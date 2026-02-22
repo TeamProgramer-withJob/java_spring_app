@@ -253,3 +253,73 @@
 - 問い合わせフォーム
 - 共通エラーハンドリング
 - テスト
+
+---
+
+## 11. ソースコードファイル一覧（機能別）
+
+> パッケージルート: `src/main/java/com/example/its/`
+> テンプレートルート: `src/main/resources/templates/`
+> リソースルート: `src/main/resources/`
+
+---
+
+### 11.1 認証・会員登録
+
+| 種別 | ファイルパス | 役割 |
+|-----|------------|------|
+| Controller | `web/IndexController.java` | トップページ表示、ログインフォーム表示 |
+| Controller | `web/auth/SignupController.java` | 会員登録フォーム表示・登録処理 |
+| Service | `domain/auth/UserService.java` | 会員登録ビジネスロジック（パスワードハッシュ化） |
+| Repository | `domain/auth/UserRepository.java` | users テーブルへのアクセス（MyBatis） |
+| Entity | `domain/auth/User.java` | ユーザーエンティティ（users テーブル対応） |
+| Form | `domain/auth/SignupForm.java` | 会員登録フォームのバリデーション定義 |
+| Security | `config/SecurityConfig.java` | Spring Security 設定（全ページ認証必須、ログインページ指定） |
+| Security | `domain/auth/CustomUserDetailsService.java` | Spring Security 用ユーザー取得ロジック |
+| Security | `domain/auth/CustomUserDetails.java` | SecurityContext に userId・displayName を拡張保持 |
+| Template | `templates/index.html` | トップページ |
+| Template | `templates/login.html` | ログインフォーム |
+| Template | `templates/auth/signup.html` | 会員登録フォーム |
+
+---
+
+### 11.2 霊園ページ
+
+| 種別 | ファイルパス | 役割 |
+|-----|------------|------|
+| Controller | `web/cemetery/CemeteryController.java` | 霊園の一覧・詳細・作成フォーム表示・作成処理 |
+| Service | `domain/cemetery/CemeteryService.java` | 霊園のビジネスロジック（取得・作成） |
+| Repository | `domain/cemetery/CemeteryRepository.java` | cemeteries テーブルへのアクセス（MyBatis） |
+| Entity | `domain/cemetery/CemeteryEntity.java` | 霊園エンティティ（cemeteries テーブル対応） |
+| Form | `domain/cemetery/CemeteryForm.java` | 霊園作成フォームのバリデーション定義（name 100字以内、description 1000字以内） |
+| Template | `templates/cemeteries/list.html` | 霊園一覧画面 |
+| Template | `templates/cemeteries/new.html` | 霊園作成フォーム |
+| Template | `templates/cemeteries/detail.html` | 霊園詳細・思い出一覧画面 |
+
+---
+
+### 11.3 思い出投稿
+
+| 種別 | ファイルパス | 役割 |
+|-----|------------|------|
+| Controller | `web/memory/MemoryController.java` | 思い出の詳細・投稿フォーム表示・投稿処理・画像配信 |
+| Service | `domain/memory/MemoryService.java` | 思い出のビジネスロジック（取得・作成・画像取得） |
+| Repository | `domain/memory/MemoryRepository.java` | memories テーブルへのアクセス（MyBatis、BLOB マッピング含む） |
+| Entity | `domain/memory/MemoryEntity.java` | 思い出エンティティ（imageData: byte[]、imageContentType を含む） |
+| Form | `domain/memory/MemoryForm.java` | 思い出投稿フォームのバリデーション定義（title 256字以内、body 必須、image 任意） |
+| Template | `templates/memories/new.html` | 思い出投稿フォーム |
+| Template | `templates/memories/detail.html` | 思い出詳細画面（画像表示含む） |
+
+---
+
+### 11.4 共通・インフラ
+
+| 種別 | ファイルパス | 役割 |
+|-----|------------|------|
+| Template | `templates/fragments/layout.html` | 全画面共通レイアウト（ヘッダー・ナビ等） |
+| DB スキーマ | `resources/schema.sql` | テーブル定義（users / cemeteries / memories / follows） |
+| DB 初期データ | `resources/data.sql` | テスト用初期データ（ユーザー3名・霊園2件・思い出3件） |
+| アプリ設定 | `resources/application.properties` | SQLite 接続設定・ファイルアップロード上限（10MB）・SQL 初期化設定 |
+| メインクラス | `ItsApplication.java` | Spring Boot アプリケーション起動クラス |
+| サンプルデータ | `infrastructure/SampleDataLoader.java` | 起動時にサンプル画像を memories テーブルへ投入（image_data が NULL の場合のみ） |
+| サンプル画像 | `resources/sample-images/memory1.jpg` 〜 `memory3.jpg` | 思い出ID 1〜3 に対応するサンプル画像ファイル |

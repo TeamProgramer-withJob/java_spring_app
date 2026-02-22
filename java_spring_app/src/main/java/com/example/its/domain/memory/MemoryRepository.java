@@ -6,9 +6,11 @@ import java.util.Optional;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.type.JdbcType;
 
 @Mapper
@@ -52,4 +54,8 @@ public interface MemoryRepository {
             """)
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(MemoryEntity memory);
+
+    /** サンプルデータ投入用：image_data が未設定の場合のみ画像を更新する */
+    @Update("UPDATE memories SET image_data = #{imageData,jdbcType=VARBINARY}, image_content_type = #{contentType} WHERE id = #{id} AND image_data IS NULL")
+    void updateImageIfAbsent(@Param("id") Long id, @Param("imageData") byte[] imageData, @Param("contentType") String contentType);
 }

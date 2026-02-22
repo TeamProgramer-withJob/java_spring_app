@@ -321,3 +321,5 @@
 | DB 初期データ | `resources/data.sql` | テスト用初期データ（ユーザー3名・霊園2件・思い出3件） |
 | アプリ設定 | `resources/application.properties` | SQLite 接続設定・ファイルアップロード上限（10MB）・SQL 初期化設定 |
 | メインクラス | `ItsApplication.java` | Spring Boot アプリケーション起動クラス |
+| サンプルデータ | `infrastructure/SampleDataLoader.java` | 起動時にサンプル画像を memories テーブルへ投入（image_data が NULL の場合のみ） |
+| サンプル画像 | `resources/sample-images/memory1.jpg` 〜 `memory3.jpg` | 思い出ID 1〜3 に対応するサンプル画像ファイル |

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::body})}">
+<head>
+    <title th:text="${cemetery.name} + ' | 結びの霊園'">霊園詳細 | 結びの霊園</title>
+</head>
+<body>
+<div class="mt-4">
+
+    <div class="d-flex justify-content-between align-items-start mb-3">
+        <div>
+            <h2 th:text="${cemetery.name}"></h2>
+            <p class="text-muted mb-1" th:text="${cemetery.ownerDisplayName} + ' さんの霊園'"></p>
+        </div>
+    </div>
+
+    <p th:text="${cemetery.description}" class="mb-4"></p>
+
+    <hr>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0">思い出</h4>
+        <a th:href="@{/cemeteries/{id}/memories/new(id=${cemetery.id})}"
+           class="btn btn-sm btn-primary">＋ 思い出を投稿する</a>
+    </div>
+
+    <div th:if="${#lists.isEmpty(memories)}" class="text-muted">
+        まだ思い出が投稿されていません。
+    </div>
+
+    <div class="row g-3" th:unless="${#lists.isEmpty(memories)}">
+        <div class="col-md-4" th:each="memory : ${memories}">
+            <div class="card h-100">
+                <div th:if="${memory.imageContentType != null}" class="card-img-top overflow-hidden" style="height: 160px;">
+                    <img th:src="@{/cemeteries/{cid}/memories/{mid}/image(cid=${cemetery.id},mid=${memory.id})}"
+                         alt="思い出の画像"
+                         class="img-fluid w-100 h-100"
+                         style="object-fit: cover;">
+                </div>
+                <div class="card-body">
+                    <h6 class="card-title" th:text="${memory.title}"></h6>
+                    <p class="text-muted small mb-1" th:text="${memory.authorDisplayName} + ' さん'"></p>
+                    <p class="card-text small text-truncate" th:text="${memory.body}"></p>
+                </div>
+                <div class="card-footer">
+                    <a th:href="@{/cemeteries/{cid}/memories/{mid}(cid=${cemetery.id},mid=${memory.id})}"
+                       class="btn btn-sm btn-outline-primary">詳細を見る</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${isOwner}" class="mt-4">
+        <a th:href="@{/cemeteries/new}" class="btn btn-sm btn-outline-secondary">別の霊園を作成する</a>
+    </div>
+
+    <div class="mt-4">
+        <a th:href="@{/cemeteries}">← 霊園一覧へ戻る</a>
+    </div>
+</div>
+</body>
+</html>

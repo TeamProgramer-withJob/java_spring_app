@@ -2,17 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{fragments/layout :: layout(~{::title}, ~{::body})}">
 <head>
-    <title>トップページ | 課題管理アプリケーション</title>
+    <title>ホーム | 結びの霊園</title>
 </head>
 <body>
-<h1 class="mt-3">課題管理アプリケーション</h1>
-<ul>
-    <li>
-        <a href="./issues/list.html" th:href="@{/issues}">課題一覧</a>
-    </li>
-    <li>
-        <a href="/test.html" th:href="@{/test}">テスト</a>
-    </li>
-</ul>
+<div class="mt-4">
+    <h1>結びの霊園</h1>
+    <p class="lead">大切な人との思い出を、ここに残しましょう。</p>
+    <hr>
+    <ul>
+        <li><a th:href="@{/cemeteries}">霊園ページ一覧</a></li>
+        <li><a th:href="@{/cemeteries/new}">霊園ページを作成する</a></li>
+    </ul>
+</div>
 </body>
 </html>

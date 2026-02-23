@@ -1,6 +1,6 @@
-# ITS (Issue Tracking System)
+# 結びの霊園
 
-課題管理システムのSpring Bootアプリケーション
+オンライン霊園Webアプリケーション（Spring Boot / 勉強会プロジェクト）
 
 ## 必要な環境
 
@@ -45,10 +45,8 @@ java -version
 ### 4. 動作確認
 ブラウザで以下のURLにアクセス:
 - アプリケーション: http://localhost:8080
-- H2コンソール: http://localhost:8080/h2-console
-  - JDBC URL: `jdbc:h2:mem:its`
-  - Username: `sa`
-  - Password: (空欄)
+
+> **DB**: SQLite ファイルベース（`./data/cemetery.db`）。アプリ起動のたびに `schema.sql` / `data.sql` が流れます。
 
 ## 技術スタック
 
@@ -58,7 +56,7 @@ java -version
 - **MyBatis**: 3.0.3
 - **Spring Security**: 6.x
 - **Thymeleaf**: 3.x
-- **H2 Database**: 2.x (開発環境)
+- **SQLite**: 3.x (開発環境)
 - **Lombok**: 1.18.x
 
 ## プロジェクト構成
@@ -67,19 +65,25 @@ java -version
 src/
 ├── main/
 │   ├── java/com/example/its/
-│   │   ├── config/         # 設定クラス
-│   │   ├── domain/         # ドメイン層
-│   │   │   ├── auth/       # 認証・ユーザー管理
-│   │   │   └── issue/      # 課題管理
-│   │   ├── web/            # コントローラー層
-│   │   │   └── issue/      # 課題関連
+│   │   ├── config/             # 設定クラス（SecurityConfig 等）
+│   │   ├── domain/             # ドメイン層
+│   │   │   ├── auth/           # 認証・ユーザー管理
+│   │   │   ├── cemetery/       # 霊園ページ
+│   │   │   ├── memory/         # 思い出投稿
+│   │   │   └── follow/         # フォロー機能
+│   │   ├── infrastructure/     # SampleDataLoader 等
+│   │   ├── web/                # コントローラー層
+│   │   │   ├── auth/           # 会員登録
+│   │   │   ├── cemetery/       # 霊園 CRUD
+│   │   │   ├── memory/         # 思い出 CRUD
+│   │   │   ├── follow/         # フォロー
+│   │   │   └── user/           # マイページ
 │   │   └── ItsApplication.java
 │   └── resources/
-│       ├── templates/      # Thymeleafテンプレート
-│       ├── static/         # 静的ファイル
-│       ├── schema.sql      # DBスキーマ
-│       └── data.sql        # 初期データ
-└── test/                   # テストコード
+│       ├── templates/          # Thymeleafテンプレート
+│       ├── schema.sql          # DBスキーマ
+│       └── data.sql            # 初期データ
+└── test/                       # テストコード
 ```
 
 ## よく使うコマンド
@@ -216,8 +220,8 @@ A: 上記「トラブルシューティング」を参照して、既存プロ�
 **Q: Lombokが動かない**
 A: IDEにLombokプラグインをインストールし、Annotation Processingを有効化してください。
 
-**Q: H2データベースのデータが消える**
-A: インメモリデータベースを使用しているため、アプリケーション停止時にデータは消失します。永続化したい場合は `application-local.properties` でファイルベースに変更してください。
+**Q: 起動のたびにデータがリセットされる**
+A: `spring.sql.init.mode=always` の設定により、起動時に `schema.sql` / `data.sql` が毎回流れます。データを保持したい場合は `application-local.properties` で `spring.sql.init.mode=never` に変更してください。
 
 ## 開発ルール
 

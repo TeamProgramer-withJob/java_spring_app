@@ -25,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * <p>修正Cの動作を検証する：
  * <ul>
  *   <li>C: オープンリダイレクト対策 — 不正Refererは /cemeteries にフォールバック</li>
+ *   <li>follow / unfollow の両エンドポイントで同一のフォールバック仕様が機能すること</li>
  * </ul>
  */
 @SpringBootTest
@@ -85,5 +86,34 @@ class FollowControllerTest {
                         .header("Referer", "http://localhost:8080/cemeteries/5"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/cemeteries/5"));
+    }
+
+    /**
+     * 修正C (unfollow): 外部URLをRefererに設定した場合 → /cemeteries へフォールバック
+     *
+     * <p>unfollow エンドポイントでも follow と同一のフォールバック仕様が機能すること。
+     */
+    @Test
+    void unfollow_withEvilReferer_redirectsToCemeteries() throws Exception {
+        mockMvc.perform(post("/users/2/unfollow")
+                        .with(Objects.requireNonNull(csrf()))
+                        .with(Objects.requireNonNull(user(mockUser())))
+                        .header("Referer", "https://evil.example.com/steal"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/cemeteries"));
+    }
+
+    /**
+     * 修正C (unfollow): Refererが欠落している場合 → /cemeteries へフォールバック
+     *
+     * <p>unfollow エンドポイントでも Referer 欠落時に /cemeteries にリダイレクトされること。
+     */
+    @Test
+    void unfollow_withNoReferer_redirectsToCemeteries() throws Exception {
+        mockMvc.perform(post("/users/2/unfollow")
+                        .with(Objects.requireNonNull(csrf()))
+                        .with(Objects.requireNonNull(user(mockUser()))))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/cemeteries"));
     }
 }

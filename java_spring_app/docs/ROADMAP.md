@@ -10,10 +10,10 @@
 
 これらは既存コードへの影響が小さく、1〜2日で完了できる独立タスク。
 
-- [ ] **README 同期**：実装済み機能・開発フロー・起動手順を現在の状態に合わせる
-- [ ] **テスト追加 — unfollow の Referer フォールバック**：不正・欠落 Referer 時に `/cemeteries` へフォールバックすることを確認（`FollowControllerTest` に追記）
-- [ ] **テスト追加 — CemeteryController の 404/403 マッピング**：`GlobalExceptionHandler` が CemeteryController からの例外を正しく HTTP ステータスに変換することを確認
-- [ ] **CHANGELOG.md 新規作成**：これまでの主要変更を 1 行ずつ時系列で記録する
+- [x] **README 同期**：実装済み機能・開発フロー・起動手順を現在の状態に合わせる (2026-02-23)
+- [x] **テスト追加 — unfollow の Referer フォールバック**：不正・欠落 Referer 時に `/cemeteries` へフォールバックすることを確認（`FollowControllerTest` に追記）(2026-02-23)
+- [x] **テスト追加 — CemeteryController の 404/403 マッピング**：`GlobalExceptionHandler` が CemeteryController からの例外を正しく HTTP ステータスに変換することを確認 (2026-02-23)
+- [x] **CHANGELOG.md 新規作成**：これまでの主要変更を 1 行ずつ時系列で記録する (2026-02-23)
 
 ---
 

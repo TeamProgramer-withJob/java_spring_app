@@ -64,3 +64,30 @@
 - 判定: `OK` / `差し戻し`
 - 指摘事項:
 - 次アクション:
+
+---
+
+## Task ID: T-20260223-004
+### 依頼内容（Codex -> Claude）
+- 目的: Controller 層の回帰防止強化（unfollow の Referer フォールバック、CemeteryController の 404/403 マッピング確認）
+- 変更対象: FollowControllerTest.java、CemeteryControllerTest.java（新規）、docs/ACTION_ITEMS_v0.1.md、docs/ROADMAP.md
+- 非対象: 本番コード（src/main/java）の仕様変更、README更新、追加機能実装
+- 完了条件: 指定4ファイルの更新、`./gradlew test` 成功、報告フォーマット提出
+
+### 実行結果（Claude -> Codex）
+- 変更ファイル:
+  - src/test/java/com/example/its/web/follow/FollowControllerTest.java
+  - src/test/java/com/example/its/web/cemetery/CemeteryControllerTest.java（新規）
+  - docs/ACTION_ITEMS_v0.1.md
+  - docs/ROADMAP.md
+- 実施内容:
+  - unfollow の Referer 不正/欠落時フォールバックテストを追加
+  - CemeteryController 経由で IllegalArgumentException→404、IllegalStateException→403 を検証するテストを追加
+  - docs の Now 項目を完了へ更新
+- テスト結果: BUILD SUCCESSFUL（`./gradlew test`）
+- 残課題/懸念: 特になし
+
+### レビュー結果（Codex -> チーム）
+- 判定: `OK`
+- 指摘事項: なし
+- 次アクション: コミット・プッシュ実施後、Next セクション（Service 層テスト整備 / バリデーション統一 / JaCoCo 導入）へ移行

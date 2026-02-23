@@ -86,10 +86,10 @@ Codex コードレビュー指摘への対応（2026-02-23）。
 | 共通エラーハンドリング | ✅ 実装済み |
 | セキュリティ修正（パス整合・Referer対策） | ✅ 実装済み |
 | 回帰テスト（Controller 層・基本分） | ✅ 実装済み |
-| README 同期 | 🔲 未着手 |
-| unfollow の Referer テスト追加 | 🔲 未着手 |
-| CemeteryController の 404/403 テスト | 🔲 未着手 |
-| CHANGELOG.md 作成 | 🔲 未着手 |
+| README 同期 | ✅ 実装済み |
+| unfollow の Referer テスト追加 | ✅ 実装済み |
+| CemeteryController の 404/403 テスト | ✅ 実装済み |
+| CHANGELOG.md 作成 | ✅ 実装済み |
 
 ---
 
@@ -101,10 +101,10 @@ Codex コードレビュー指摘への対応（2026-02-23）。
 
 | # | タスク | 担当 | ステータス |
 |---|--------|------|-----------|
-| 1 | README.md を現在の実装状況に同期 | Claude Code | 🔲 未着手 |
-| 2 | `FollowControllerTest` に unfollow の Referer テスト追加 | Claude Code | 🔲 未着手 |
-| 3 | `CemeteryControllerTest` の 404/403 マッピング確認テスト追加 | Claude Code | 🔲 未着手 |
-| 4 | CHANGELOG.md 新規作成（主要変更を時系列で記録） | Claude Code | 🔲 未着手 |
+| 1 | README.md を現在の実装状況に同期 | Claude Code | ✅ 完了 (2026-02-23) |
+| 2 | `FollowControllerTest` に unfollow の Referer テスト追加 | Claude Code | ✅ 完了 (2026-02-23) |
+| 3 | `CemeteryControllerTest` の 404/403 マッピング確認テスト追加 | Claude Code | ✅ 完了 (2026-02-23) |
+| 4 | CHANGELOG.md 新規作成（主要変更を時系列で記録） | Claude Code | ✅ 完了 (2026-02-23) |
 
 ### Next（1〜2 か月以内）
 

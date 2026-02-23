@@ -225,3 +225,31 @@
 - 判定: `OK`
 - 指摘事項: なし
 - 次アクション: E2E シナリオ拡張（Playwright）を次タスク候補として検討
+
+---
+
+## Task ID: T-20260223-010
+### 依頼内容（Codex -> Claude）
+- 目的: Playwright の E2E 基盤を拡張し、ログイン成功と霊園作成の回帰を自動検知できる状態にする
+- 変更対象: tests/e2e/login-success.spec.ts（新規）、tests/e2e/cemetery-create.spec.ts（新規）
+- 非対象: 本番コード変更、既存単体/統合テスト修正、ROADMAP/ACTION_ITEMS/docs/ai 更新
+- 完了条件: 追加2シナリオ実装、`npx playwright test` 全通過
+
+### 実行結果（Claude -> Codex）
+- 変更ファイル:
+  - tests/e2e/login-success.spec.ts（新規）
+  - tests/e2e/cemetery-create.spec.ts（新規）
+- 実施内容:
+  - 未認証アクセスからログイン成功後 `/cemeteries` に遷移するシナリオを追加
+  - 霊園作成フォーム遷移と作成完了（詳細画面表示）シナリオを追加
+  - `/cemeteries?continue` を考慮した URL アサーションへ修正
+- テスト結果:
+  - `npx playwright test` → 4 passed
+- 残課題/懸念:
+  - 霊園作成E2Eは実DBにデータを追加するため、継続実行でテストデータが蓄積する
+  - Windows 環境で `webServer.command` の運用に注意が必要
+
+### レビュー結果（Codex -> チーム）
+- 判定: `OK`
+- 指摘事項: なし
+- 次アクション: E2E実行安定化（テストデータ後片付け / webServer運用）を次タスク候補として検討

@@ -3,6 +3,7 @@ package com.example.its.domain.memory;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -70,4 +71,7 @@ public interface MemoryRepository {
     /** サンプルデータ投入用：image_data が未設定の場合のみ画像を更新する */
     @Update("UPDATE memories SET image_data = #{imageData,jdbcType=VARBINARY}, image_content_type = #{contentType} WHERE id = #{id} AND image_data IS NULL")
     void updateImageIfAbsent(@Param("id") Long id, @Param("imageData") byte[] imageData, @Param("contentType") String contentType);
+
+    @Delete("DELETE FROM memories WHERE id = #{id}")
+    void deleteById(Long id);
 }

@@ -71,6 +71,16 @@ public class MemoryController {
         return "memories/detail";
     }
 
+    /** 思い出を削除する（投稿者本人のみ） */
+    @PostMapping("/{memoryId}/delete")
+    public String delete(
+            @PathVariable Long cemeteryId,
+            @PathVariable Long memoryId,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        memoryService.delete(memoryId, userDetails.getUserId());
+        return "redirect:/cemeteries/" + cemeteryId;
+    }
+
     /** 思い出に添付された画像を配信する */
     @GetMapping("/{memoryId}/image")
     @ResponseBody

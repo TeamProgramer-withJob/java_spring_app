@@ -47,6 +47,19 @@ public class MemoryService {
     }
 
     /**
+     * 思い出を削除する。投稿者本人のみ削除可能。
+     */
+    @Transactional
+    public void delete(Long memoryId, Long userId) {
+        MemoryEntity memory = memoryRepository.findById(memoryId)
+                .orElseThrow(() -> new IllegalArgumentException("思い出が見つかりません (id=" + memoryId + ")"));
+        if (!memory.getAuthorId().equals(userId)) {
+            throw new IllegalStateException("削除権限がありません");
+        }
+        memoryRepository.deleteById(memoryId);
+    }
+
+    /**
      * 思い出を作成する。画像が添付されていれば DB に BLOB として保存する。
      */
     @Transactional

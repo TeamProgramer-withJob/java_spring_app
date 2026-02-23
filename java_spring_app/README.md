@@ -122,6 +122,19 @@ src/
 - **今後**: 重要な画面導線には E2E テストの追加を予定
 - テストファイルは `src/test/java/com/example/its/web/` 配下に配置
 
+### カバレッジレポート（JaCoCo）
+
+```bash
+# テスト実行 + HTML レポート生成（test 完了後に自動実行）
+./gradlew test jacocoTestReport
+```
+
+レポートは以下で確認できます:
+
+```
+build/reports/jacoco/test/html/index.html
+```
+
 ### トラブルシューティング
 ```bash
 # ポート8080が使用中の場合

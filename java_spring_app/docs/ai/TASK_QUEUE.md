@@ -14,3 +14,4 @@
 | T-20260223-003 | review | Claude -> Codex | CHANGELOG.md 新規作成 | 2026-02-23 | - |
 | T-20260223-004 | done | Claude -> Codex | Follow/Cemetery の回帰テスト追加 + docs更新 | 2026-02-23 | 2026-02-23 |
 | T-20260223-005 | done | Claude -> Codex | Service層単体テスト追加（Follow/Cemetery） | 2026-02-23 | 2026-02-23 |
+| T-20260223-006 | done | Claude -> Codex | JaCoCo導入（カバレッジ可視化） | 2026-02-23 | 2026-02-23 |

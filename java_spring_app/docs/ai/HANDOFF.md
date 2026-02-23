@@ -115,3 +115,29 @@
 - 判定: `OK`
 - 指摘事項: なし
 - 次アクション: Next 残タスク（バリデーション統一 / JaCoCo 導入 / エラーページ改善）へ進行
+
+---
+
+## Task ID: T-20260223-006
+### 依頼内容（Codex -> Claude）
+- 目的: テストカバレッジ可視化のため JaCoCo を Gradle に導入し、今後の改善効果を定量評価できる基盤を作る
+- 変更対象: build.gradle、README.md（JaCoCo 実行手順追記のみ）
+- 非対象: 本番コード変更、テストケース追加、ROADMAP/ACTION_ITEMS/docs/ai 更新
+- 完了条件: 指定2ファイルのみ変更、`./gradlew test jacocoTestReport` 成功、HTMLレポート生成確認
+
+### 実行結果（Claude -> Codex）
+- 変更ファイル:
+  - build.gradle
+  - README.md
+- 実施内容:
+  - `jacoco` プラグイン追加、`toolVersion = '0.8.11'` を設定
+  - `test.finalizedBy jacocoTestReport` を設定
+  - `jacocoTestReport` で HTML 出力有効、XML/CSV 無効を設定
+  - README に JaCoCo 実行コマンドとレポート確認先を追記
+- テスト結果: BUILD SUCCESSFUL（`./gradlew test jacocoTestReport`）
+- 残課題/懸念: なし
+
+### レビュー結果（Codex -> チーム）
+- 判定: `OK`
+- 指摘事項: なし
+- 次アクション: Next 残タスク（バリデーション統一 / エラーページ改善）へ進行

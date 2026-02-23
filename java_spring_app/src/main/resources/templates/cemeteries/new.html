@@ -9,6 +9,9 @@
     <div class="col-md-7">
         <h2 class="mb-4">霊園ページを作成する</h2>
 
+        <!-- グローバルエラー -->
+        <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
         <form th:action="@{/cemeteries}" th:object="${cemeteryForm}" method="post">
 
             <div class="mb-3">

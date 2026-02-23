@@ -21,9 +21,9 @@
 
 Now が完了してから取り組む、やや規模が大きいタスク。
 
-- [ ] **Service 層の単体テスト整備**：`MemoryService` / `CemeteryService` / `FollowService` を Mockito ベースで検証する
-- [ ] **バリデーションエラーの統一メッセージ**：入力エラー時のフラッシュメッセージやバインディングエラー表示を画面横断で統一する
-- [ ] **テストカバレッジの可視化**：JaCoCo を Gradle に追加してレポートを出力できるようにする
+- [x] **Service 層の単体テスト整備**：`MemoryService` / `CemeteryService` / `FollowService` を Mockito ベースで検証する (2026-02-23, Follow/Cemetery 完了)
+- [x] **バリデーションエラーの統一メッセージ**：入力エラー時のフラッシュメッセージやバインディングエラー表示を画面横断で統一する (2026-02-23, 主要フォームの表示統一完了)
+- [x] **テストカバレッジの可視化**：JaCoCo を Gradle に追加してレポートを出力できるようにする (2026-02-23)
 - [ ] **エラーページのデザイン改善**：`error/403.html` / `error/404.html` / `error/500.html` のレイアウト・メッセージを見直す
 
 ---
@@ -52,3 +52,6 @@ Now が完了してから取り組む、やや規模が大きいタスク。
 | 2026-02-23 | `FollowController` オープンリダイレクト修正（Referer ホワイトリスト方式） |
 | 2026-02-23 | 回帰テスト追加（`MemoryControllerTest` / `FollowControllerTest`） |
 | 2026-02-23 | null 型安全性警告の修正（`SampleDataLoader` / `MemoryController` / テストコード） |
+| 2026-02-23 | Service 層単体テスト追加（`FollowServiceTest` / `CemeteryServiceTest`） |
+| 2026-02-23 | JaCoCo 導入（`build.gradle` 設定 + README 手順追記） |
+| 2026-02-23 | 主要フォームのバリデーションエラー表示統一（cemeteries/memories） |

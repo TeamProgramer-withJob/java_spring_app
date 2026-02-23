@@ -24,6 +24,9 @@
 
         <h2 class="mb-4">思い出を編集する</h2>
 
+        <!-- グローバルエラー -->
+        <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
         <form th:action="@{/cemeteries/{cid}/memories/{mid}/edit(cid=${cemetery.id},mid=${memory.id})}"
               th:object="${memoryForm}"
               method="post"

@@ -20,6 +20,9 @@
 
         <h2 class="mb-4">思い出を投稿する</h2>
 
+        <!-- グローバルエラー -->
+        <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
         <form th:action="@{/cemeteries/{id}/memories(id=${cemetery.id})}"
               th:object="${memoryForm}"
               method="post"

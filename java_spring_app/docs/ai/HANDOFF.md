@@ -41,9 +41,9 @@
 - 残課題/懸念: 特になし
 
 ### レビュー結果（Codex -> チーム）
-- 判定: `OK` / `差し戻し`
-- 指摘事項:
-- 次アクション:
+- 判定: `OK`
+- 指摘事項: なし
+- 次アクション: ROADMAP/ACTION_ITEMS の Next タスクへ進行
 
 ---
 
@@ -141,3 +141,29 @@
 - 判定: `OK`
 - 指摘事項: なし
 - 次アクション: Next 残タスク（バリデーション統一 / エラーページ改善）へ進行
+
+---
+
+## Task ID: T-20260223-007
+### 依頼内容（Codex -> Claude）
+- 目的: 主要フォームのバリデーションエラー表示を統一し、入力エラー時のUXを共通化する
+- 変更対象: signup/cemeteries/memories のテンプレートおよび関連コントローラー
+- 非対象: ドメインロジック変更、バリデーションルール変更、ROADMAP/ACTION_ITEMS/docs/ai 更新
+- 完了条件: 指定対象で表示仕様統一、`./gradlew test` 成功
+
+### 実行結果（Claude -> Codex）
+- 変更ファイル:
+  - src/main/resources/templates/cemeteries/new.html
+  - src/main/resources/templates/cemeteries/edit.html
+  - src/main/resources/templates/memories/new.html
+  - src/main/resources/templates/memories/edit.html
+- 実施内容:
+  - 各フォームで `<h2>` 直下にグローバルエラー表示ブロック（`errorMessage`）を追加
+  - フィールドエラー表示と BindingResult 処理は既存で統一済みのため変更なしを確認
+- テスト結果: BUILD SUCCESSFUL（`./gradlew test`）
+- 残課題/懸念: なし
+
+### レビュー結果（Codex -> チーム）
+- 判定: `OK`
+- 指摘事項: なし
+- 次アクション: Next 残タスク（エラーページ改善）へ進行

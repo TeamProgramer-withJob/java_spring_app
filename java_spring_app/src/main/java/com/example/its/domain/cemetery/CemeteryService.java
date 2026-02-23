@@ -51,6 +51,21 @@ public class CemeteryService {
     }
 
     /**
+     * 霊園ページを編集する。オーナー本人のみ編集可能。
+     */
+    @Transactional
+    public void update(Long cemeteryId, CemeteryForm form, Long userId) {
+        CemeteryEntity cemetery = cemeteryRepository.findById(cemeteryId)
+                .orElseThrow(() -> new IllegalArgumentException("霊園ページが見つかりません (id=" + cemeteryId + ")"));
+        if (!cemetery.getOwnerId().equals(userId)) {
+            throw new IllegalStateException("編集権限がありません");
+        }
+        cemetery.setName(form.getName());
+        cemetery.setDescription(form.getDescription());
+        cemeteryRepository.update(cemetery);
+    }
+
+    /**
      * 新しい霊園ページを作成する。
      */
     @Transactional

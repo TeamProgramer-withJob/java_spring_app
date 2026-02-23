@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface CemeteryRepository {
@@ -41,6 +42,9 @@ public interface CemeteryRepository {
     @Insert("INSERT INTO cemeteries (owner_id, name, description) VALUES (#{ownerId}, #{name}, #{description})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(CemeteryEntity cemetery);
+
+    @Update("UPDATE cemeteries SET name = #{name}, description = #{description} WHERE id = #{id}")
+    void update(CemeteryEntity cemetery);
 
     /** 霊園に紐づく思い出をすべて削除する（霊園削除前の連鎖削除用） */
     @Delete("DELETE FROM memories WHERE cemetery_id = #{cemeteryId}")

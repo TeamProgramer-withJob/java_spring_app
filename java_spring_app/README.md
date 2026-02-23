@@ -135,6 +135,25 @@ src/
 build/reports/jacoco/test/html/index.html
 ```
 
+### E2E テスト（Playwright）
+
+```bash
+# 1. 依存インストール（初回のみ）
+npm install
+
+# 2. Playwright ブラウザセットアップ（初回のみ）
+npx playwright install chromium
+
+# 3. テスト実行
+#    アプリが未起動の場合、Playwright が ./gradlew bootRun で自動起動します
+npx playwright test
+
+# または package.json のスクリプト経由
+npm run test:e2e
+```
+
+テスト失敗時はスクリーンショットが `test-results/` に保存されます。
+
 ### トラブルシューティング
 ```bash
 # ポート8080が使用中の場合

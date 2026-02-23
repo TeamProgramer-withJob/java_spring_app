@@ -167,3 +167,35 @@
 - 判定: `OK`
 - 指摘事項: なし
 - 次アクション: Next 残タスク（エラーページ改善）へ進行
+
+---
+
+## Task ID: T-20260223-008
+### 依頼内容（Codex -> Claude）
+- 目的: E2E テスト基盤として Playwright を最小構成で導入し、スモークテスト1本を通す
+- 変更対象: package.json、playwright.config.ts、tests/e2e/smoke-login.spec.ts、README.md
+- 非対象: 本番コード変更、既存単体/統合テスト書き換え、ROADMAP/ACTION_ITEMS/docs/ai 更新
+- 完了条件: 指定ファイル更新、`npx playwright test` 実行可能、README 手順追記
+
+### 実行結果（Claude -> Codex）
+- 変更ファイル:
+  - package.json（新規）
+  - package-lock.json（新規）
+  - playwright.config.ts（新規）
+  - tests/e2e/smoke-login.spec.ts（新規）
+  - README.md
+  - .gitignore（Node.js/Playwright 除外追加）
+- 実施内容:
+  - Playwright 導入（@playwright/test）
+  - `baseURL` と `webServer` を含む設定追加
+  - `/login` 主要要素表示を検証するスモークテスト追加
+  - README に E2E 実行手順を追記
+- テスト結果:
+  - `npx playwright test` → 1 passed
+- 残課題/懸念:
+  - ログイン状態に関わらずナビバーに「ログアウト」ボタンが表示されるため、E2Eセレクターは role/name を優先すること
+
+### レビュー結果（Codex -> チーム）
+- 判定: `OK`
+- 指摘事項: なし
+- 次アクション: Next 残タスク（エラーページ改善）または E2E シナリオ拡張へ進行

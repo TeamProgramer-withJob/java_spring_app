@@ -14,6 +14,14 @@
 
 | 日付 | カテゴリ | 概要 | refs |
 |------|----------|------|------|
+| 2026-02-23 | docs | タスク007クローズ、ROADMAP/ACTION_ITEMS/HANDOFF/TASK_QUEUE の整合更新 | bd6526b |
+| 2026-02-23 | chore | JaCoCo 導入とタスク006レビュー反映（build.gradle/README 更新） | fbdfcd8 |
+| 2026-02-23 | test | Service層単体テスト追加（FollowServiceTest / CemeteryServiceTest）とタスク005レビュー反映 | a51b7c0 |
+| 2026-02-23 | test | Follow/Cemetery 回帰テスト追加とタスク004レビュー反映 | 14bfb3d |
+| 2026-02-23 | docs | Codex主導のAI役割分担ルールを明確化（AGENTS/CLAUDE） | 4a34cd1 |
+| 2026-02-23 | fix | favicon未配置時の例外ノイズ抑制とアプリアイコン追加 | c4c585a |
+| 2026-02-23 | docs | ROADMAP/CHANGELOG/README/AI運用ファイルの整備 | b10d61c |
+| 2026-02-23 | merge | claude/crazy-mayer の作業内容を feature/karasawy にマージ | 08e5058 |
 | 2026-02-23 | docs | CHANGELOG.md 新規作成（本ファイル） | T-20260223-003 |
 | 2026-02-23 | docs | README 同期（実装済み機能・テスト方針・開発フロー） | T-20260223-002 |
 | 2026-02-23 | docs | ROADMAP.md 新規作成（Now/Next/Later） | T-20260223-001 |

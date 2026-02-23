@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::body})}">
+<head>
+    <title>サーバーエラー | 結びの霊園</title>
+</head>
+<body>
+<div class="mt-5 text-center">
+    <h2 class="display-6">500 - サーバーエラー</h2>
+    <p class="text-muted mt-3" th:text="${errorMessage}">サーバー内部でエラーが発生しました。しばらく経ってから再度お試しください。</p>
+    <a th:href="@{/cemeteries}" class="btn btn-primary mt-3">霊園一覧へ戻る</a>
+</div>
+</body>
+</html>

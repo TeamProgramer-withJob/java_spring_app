@@ -199,3 +199,29 @@
 - 判定: `OK`
 - 指摘事項: なし
 - 次アクション: Next 残タスク（エラーページ改善）または E2E シナリオ拡張へ進行
+
+---
+
+## Task ID: T-20260223-009
+### 依頼内容（Codex -> Claude）
+- 目的: エラーページ（403/404/500）の見た目・文言・導線を統一し、次の行動を取りやすいUIに改善する
+- 変更対象: error/403.html、error/404.html、error/500.html
+- 非対象: Javaコード変更、CSSフレームワーク追加、ROADMAP/ACTION_ITEMS/docs/ai 更新
+- 完了条件: 3ページの統一、ホーム/霊園一覧導線追加、`./gradlew test` 成功
+
+### 実行結果（Claude -> Codex）
+- 変更ファイル:
+  - src/main/resources/templates/error/403.html
+  - src/main/resources/templates/error/404.html
+  - src/main/resources/templates/error/500.html
+- 実施内容:
+  - ステータスコード表示・見出しサイズ・ボタン配置を3ページで統一
+  - `th:text="${errorMessage}"` を維持しつつ、各ステータスに応じたフォールバック文言へ改善
+  - 「ホームへ戻る」「霊園一覧へ」の2導線を全ページに追加
+- テスト結果: BUILD SUCCESSFUL（`./gradlew test`）
+- 残課題/懸念: なし
+
+### レビュー結果（Codex -> チーム）
+- 判定: `OK`
+- 指摘事項: なし
+- 次アクション: E2E シナリオ拡張（Playwright）を次タスク候補として検討

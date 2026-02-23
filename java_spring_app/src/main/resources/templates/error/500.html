@@ -5,10 +5,17 @@
     <title>サーバーエラー | 結びの霊園</title>
 </head>
 <body>
-<div class="mt-5 text-center">
-    <h2 class="display-6">500 - サーバーエラー</h2>
-    <p class="text-muted mt-3" th:text="${errorMessage}">サーバー内部でエラーが発生しました。しばらく経ってから再度お試しください。</p>
-    <a th:href="@{/cemeteries}" class="btn btn-primary mt-3">霊園一覧へ戻る</a>
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 text-center">
+        <p class="display-1 fw-bold text-secondary">500</p>
+        <h1 class="h3 mb-3">サーバー内部でエラーが発生しました</h1>
+        <p class="text-muted mb-4"
+           th:text="${errorMessage}">申し訳ありません。しばらく時間をおいてから再度お試しください。問題が続く場合は管理者へお問い合わせください。</p>
+        <div class="d-flex justify-content-center gap-2">
+            <a th:href="@{/}" class="btn btn-outline-secondary">ホームへ戻る</a>
+            <a th:href="@{/cemeteries}" class="btn btn-primary">霊園一覧へ</a>
+        </div>
+    </div>
 </div>
 </body>
 </html>

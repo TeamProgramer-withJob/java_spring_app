@@ -14,6 +14,9 @@
 
 | 日付 | カテゴリ | 概要 | refs |
 |------|----------|------|------|
+| 2026-02-23 | docs | タスク009クローズ、エラーページ改善完了の docs 整合更新 | T-20260223-009 |
+| 2026-02-23 | test | Playwright E2E基盤導入とタスク008レビュー反映 | 64a5d4f |
+| 2026-02-23 | docs | CHANGELOG を最新コミット履歴に同期 | 4583c76 |
 | 2026-02-23 | docs | タスク007クローズ、ROADMAP/ACTION_ITEMS/HANDOFF/TASK_QUEUE の整合更新 | bd6526b |
 | 2026-02-23 | chore | JaCoCo 導入とタスク006レビュー反映（build.gradle/README 更新） | fbdfcd8 |
 | 2026-02-23 | test | Service層単体テスト追加（FollowServiceTest / CemeteryServiceTest）とタスク005レビュー反映 | a51b7c0 |

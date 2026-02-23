@@ -59,6 +59,15 @@ public class CemeteryController {
         return "redirect:/cemeteries/" + created.getId();
     }
 
+    /** 霊園を削除する（オーナー本人のみ） */
+    @PostMapping("/{id}/delete")
+    public String delete(
+            @PathVariable Long id,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        cemeteryService.delete(id, userDetails.getUserId());
+        return "redirect:/cemeteries";
+    }
+
     /** 霊園詳細 */
     @GetMapping("/{id}")
     public String detail(@PathVariable Long id, Model model,

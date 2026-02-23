@@ -37,6 +37,20 @@ public class CemeteryService {
     }
 
     /**
+     * 霊園を削除する。オーナー本人のみ削除可能。配下の思い出も連鎖削除する。
+     */
+    @Transactional
+    public void delete(Long cemeteryId, Long userId) {
+        CemeteryEntity cemetery = cemeteryRepository.findById(cemeteryId)
+                .orElseThrow(() -> new IllegalArgumentException("霊園ページが見つかりません (id=" + cemeteryId + ")"));
+        if (!cemetery.getOwnerId().equals(userId)) {
+            throw new IllegalStateException("削除権限がありません");
+        }
+        cemeteryRepository.deleteMemoriesByCemeteryId(cemeteryId);
+        cemeteryRepository.deleteById(cemeteryId);
+    }
+
+    /**
      * 新しい霊園ページを作成する。
      */
     @Transactional

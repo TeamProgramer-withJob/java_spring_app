@@ -3,6 +3,7 @@ package com.example.its.domain.cemetery;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -40,4 +41,11 @@ public interface CemeteryRepository {
     @Insert("INSERT INTO cemeteries (owner_id, name, description) VALUES (#{ownerId}, #{name}, #{description})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(CemeteryEntity cemetery);
+
+    /** 霊園に紐づく思い出をすべて削除する（霊園削除前の連鎖削除用） */
+    @Delete("DELETE FROM memories WHERE cemetery_id = #{cemeteryId}")
+    void deleteMemoriesByCemeteryId(Long cemeteryId);
+
+    @Delete("DELETE FROM cemeteries WHERE id = #{id}")
+    void deleteById(Long id);
 }

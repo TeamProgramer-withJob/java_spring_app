@@ -68,8 +68,13 @@
         </div>
     </div>
 
-    <div th:if="${isOwner}" class="mt-4">
+    <div th:if="${isOwner}" class="mt-4 d-flex align-items-center gap-3">
         <a th:href="@{/cemeteries/new}" class="btn btn-sm btn-outline-secondary">別の霊園を作成する</a>
+        <form th:action="@{/cemeteries/{id}/delete(id=${cemetery.id})}"
+              method="post"
+              onsubmit="return confirm('この霊園を削除してもよいですか？\n配下の思い出もすべて削除されます。');">
+            <button type="submit" class="btn btn-sm btn-danger">この霊園を削除する</button>
+        </form>
     </div>
 
     <div class="mt-4">

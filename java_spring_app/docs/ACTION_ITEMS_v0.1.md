@@ -40,15 +40,35 @@
 
 ## 優先度：中（次の開発フェーズで対応）
 
-### 4. 未実装機能の実装 ✅ 完了（共通エラーハンドリングを除く）
+### 4. 未実装機能の実装 ✅ 完了
 
-勉強会の進捗に合わせて順次対応。フォロー/マイページ/編集・削除はすべて実装済み。
+勉強会の進捗に合わせて順次対応。フォロー/マイページ/編集・削除/エラーハンドリングはすべて実装済み。
 
 - [x] フォロー機能（片方向フォロー）(2026-02-23)
 - [x] マイページ（自分の霊園・投稿一覧）(2026-02-23)
 - [x] 思い出の編集・削除 (2026-02-23)
 - [x] 霊園ページの編集・削除 (2026-02-23)
-- [ ] 共通エラーハンドリング（`@ControllerAdvice`）
+- [x] 共通エラーハンドリング（`@ControllerAdvice`）(2026-02-23)
+
+---
+
+### 5. セキュリティ修正・堅牢化 ✅ 完了
+
+Codex コードレビュー指摘への対応（2026-02-23）。
+
+- [x] `GlobalExceptionHandler` 実装（IllegalArgumentException→404, IllegalStateException→403, Exception→500）(2026-02-23)
+- [x] `MemoryController` パス整合性検証（URL の cemeteryId と memory.cemeteryId 不一致 → 404）(2026-02-23)
+- [x] `FollowController` オープンリダイレクト修正（Referer ホワイトリスト方式）(2026-02-23)
+- [x] null 型安全性警告の修正（`SampleDataLoader` / `MemoryController` / テストコード）(2026-02-23)
+
+---
+
+### 6. 回帰テスト追加 ✅ 完了（基本分のみ）
+
+修正 A/B/C の自動検証テストを追加。
+
+- [x] `MemoryControllerTest`：IllegalArgumentException→404 / IllegalStateException→403 / cemeteryId 不一致→404 (2026-02-23)
+- [x] `FollowControllerTest`：不正 Referer→/cemeteries / 欠落 Referer→/cemeteries / 正規 Referer→パスにリダイレクト (2026-02-23)
 
 ---
 
@@ -63,31 +83,36 @@
 | フォロー機能 | ✅ 実装済み |
 | マイページ | ✅ 実装済み |
 | 思い出・霊園の編集/削除 | ✅ 実装済み |
-| 共通エラーハンドリング | ❌ 未実装 |
-| テスト | ❌ 未実装 |
+| 共通エラーハンドリング | ✅ 実装済み |
+| セキュリティ修正（パス整合・Referer対策） | ✅ 実装済み |
+| 回帰テスト（Controller 層・基本分） | ✅ 実装済み |
+| README 同期 | 🔲 未着手 |
+| unfollow の Referer テスト追加 | 🔲 未着手 |
+| CemeteryController の 404/403 テスト | 🔲 未着手 |
+| CHANGELOG.md 作成 | 🔲 未着手 |
 
 ---
 
 ## 次アクション（推奨順）
 
-### 1. 共通エラーハンドリング
-`@ControllerAdvice` + `@ExceptionHandler` を実装する。
+詳細な優先順位・タスク粒度は [ROADMAP.md](ROADMAP.md) を参照。
 
-- `ResponseStatusException`（404/403 等）
-- `MethodArgumentNotValidException`（バリデーションエラー）
-- `AccessDeniedException`（権限エラー）
+### Now（直近 1〜2 週間）
 
-→ エラーページ（`templates/error/` 配下）に統一メッセージをマッピング。ログには機密情報を含めない。
+| # | タスク | 担当 | ステータス |
+|---|--------|------|-----------|
+| 1 | README.md を現在の実装状況に同期 | Claude Code | 🔲 未着手 |
+| 2 | `FollowControllerTest` に unfollow の Referer テスト追加 | Claude Code | 🔲 未着手 |
+| 3 | `CemeteryControllerTest` の 404/403 マッピング確認テスト追加 | Claude Code | 🔲 未着手 |
+| 4 | CHANGELOG.md 新規作成（主要変更を時系列で記録） | Claude Code | 🔲 未着手 |
 
-### 2. テスト整備
+### Next（1〜2 か月以内）
 
-優先カバレッジ対象：フォロー/マイページ/編集・削除の **正常・権限・バリデーション** 3パターン。
+- Service 層の単体テスト整備（Mockito ベース）
+- バリデーションエラーの統一メッセージ
+- JaCoCo によるテストカバレッジ可視化
 
-- Controller テスト：`@SpringBootTest` + `MockMvc`
-- Service テスト：`Mockito` ベースの単体テスト
-- フィクスチャ：`SampleDataLoader` をテスト用プロファイルで再利用 or `data.sql` に分離
-
-### 3. プライバシー・モデレーション（本番化時対応、勉強会では不要）
+### Later（本番化時対応、勉強会では不要）
 
 - [ ] 著作権/肖像権への同意フロー
 - [ ] 通報・凍結機能の方針

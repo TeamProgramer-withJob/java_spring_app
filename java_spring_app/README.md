@@ -2,6 +2,18 @@
 
 オンライン霊園Webアプリケーション（Spring Boot / 勉強会プロジェクト）
 
+## 実装済み機能
+
+| 機能 | 概要 |
+|------|------|
+| ログイン・ログアウト / 会員登録 | Spring Security セッション方式 |
+| 霊園ページ | 一覧・詳細・作成・編集・削除 |
+| 思い出投稿 | 一覧・詳細・作成・編集・削除（画像アップロード対応） |
+| フォロー機能 | 片方向フォロー（承認制なし） |
+| マイページ | 自分の霊園・投稿一覧 |
+| 共通エラーハンドリング | 403 / 404 / 500 ページ（`@ControllerAdvice`） |
+| 回帰テスト | Controller 層・MockMvc 中心（主要エラーケースをカバー） |
+
 ## 必要な環境
 
 ### 必須
@@ -99,9 +111,16 @@ src/
 # ビルド（テスト含む）
 ./gradlew clean build
 
+
 # 依存関係確認
 ./gradlew dependencies
 ```
+
+### テスト方針
+
+- **現在**: 単体テスト / MockMvc による Controller テスト中心
+- **今後**: 重要な画面導線には E2E テストの追加を予定
+- テストファイルは `src/test/java/com/example/its/web/` 配下に配置
 
 ### トラブルシューティング
 ```bash
@@ -130,7 +149,7 @@ kill -9 <PID>                          # プロセス強制終了
 server.port=8081
 
 # 個人用データベース設定例
-spring.datasource.url=jdbc:h2:file:./data/mydb
+spring.datasource.url=jdbc:sqlite:./data/mydb.db
 
 # ログレベル調整
 logging.level.com.example.its=DEBUG
@@ -150,6 +169,9 @@ logging.level.com.example.its=DEBUG
 - `fix/xxx`: バグ修正ブランチ
 
 ### 開発フロー
+
+**基本方針**: 小さなタスク単位で進め、`docs/ROADMAP.md` と `docs/ACTION_ITEMS_v0.1.md` を更新しながら作業する。
+
 ```bash
 # 1. developブランチから新しいブランチを作成
 git checkout develop

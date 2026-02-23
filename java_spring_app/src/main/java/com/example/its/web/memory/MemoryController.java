@@ -1,6 +1,7 @@
 package com.example.its.web.memory;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -65,6 +66,7 @@ public class MemoryController {
     public String detail(@PathVariable Long cemeteryId, @PathVariable Long memoryId,
                          Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
         MemoryEntity memory = memoryService.findById(memoryId);
+        validateMemoryBelongsToCemetery(memory, cemeteryId);
         model.addAttribute("memory", memory);
         model.addAttribute("cemetery", cemeteryService.findById(cemeteryId));
         model.addAttribute("isAuthor", memory.getAuthorId().equals(userDetails.getUserId()));
@@ -76,6 +78,7 @@ public class MemoryController {
     public String showEditForm(@PathVariable Long cemeteryId, @PathVariable Long memoryId,
                                Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
         MemoryEntity memory = memoryService.findById(memoryId);
+        validateMemoryBelongsToCemetery(memory, cemeteryId);
         if (!memory.getAuthorId().equals(userDetails.getUserId())) {
             return "redirect:/cemeteries/" + cemeteryId + "/memories/" + memoryId;
         }
@@ -98,9 +101,11 @@ public class MemoryController {
             @AuthenticationPrincipal CustomUserDetails userDetails,
             Model model) throws IOException {
 
+        MemoryEntity memory = memoryService.findById(memoryId);
+        validateMemoryBelongsToCemetery(memory, cemeteryId);
         if (bindingResult.hasErrors()) {
             model.addAttribute("cemetery", cemeteryService.findById(cemeteryId));
-            model.addAttribute("memory", memoryService.findById(memoryId));
+            model.addAttribute("memory", memory);
             return "memories/edit";
         }
 
@@ -114,6 +119,7 @@ public class MemoryController {
             @PathVariable Long cemeteryId,
             @PathVariable Long memoryId,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
+        validateMemoryBelongsToCemetery(memoryService.findById(memoryId), cemeteryId);
         memoryService.delete(memoryId, userDetails.getUserId());
         return "redirect:/cemeteries/" + cemeteryId;
     }
@@ -122,12 +128,29 @@ public class MemoryController {
     @GetMapping("/{memoryId}/image")
     @ResponseBody
     public ResponseEntity<byte[]> image(@PathVariable Long cemeteryId, @PathVariable Long memoryId) {
+        validateMemoryBelongsToCemetery(memoryService.findById(memoryId), cemeteryId);
         MemoryEntity imageEntity = memoryService.findImageById(memoryId);
         if (imageEntity.getImageData() == null) {
             return ResponseEntity.notFound().build();
         }
+        String contentType = imageEntity.getImageContentType();
+        MediaType mediaType = Objects.requireNonNull(
+                (contentType != null && !contentType.isBlank())
+                        ? MediaType.parseMediaType(contentType)
+                        : MediaType.APPLICATION_OCTET_STREAM);
         return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(imageEntity.getImageContentType()))
+                .contentType(mediaType)
                 .body(imageEntity.getImageData());
+    }
+
+    /**
+     * パスの cemeteryId と memory.cemeteryId が一致するか検証する。
+     * 不一致時は IllegalArgumentException をスロー（GlobalExceptionHandler が 404 にマッピング）。
+     */
+    private void validateMemoryBelongsToCemetery(MemoryEntity memory, Long cemeteryId) {
+        if (!memory.getCemeteryId().equals(cemeteryId)) {
+            throw new IllegalArgumentException(
+                    "指定された思い出はこの霊園に存在しません (memoryId=" + memory.getId() + ", cemeteryId=" + cemeteryId + ")");
+        }
     }
 }

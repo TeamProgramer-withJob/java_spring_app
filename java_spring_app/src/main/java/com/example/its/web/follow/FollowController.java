@@ -1,5 +1,7 @@
 package com.example.its.web.follow;
 
+import java.net.URI;
+
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,7 +28,7 @@ public class FollowController {
                          @AuthenticationPrincipal CustomUserDetails userDetails,
                          HttpServletRequest request) {
         followService.follow(userDetails.getUserId(), userId);
-        return "redirect:" + getPreviousPage(request);
+        return "redirect:" + safeRedirectPath(request);
     }
 
     /** アンフォローする */
@@ -35,12 +37,41 @@ public class FollowController {
                            @AuthenticationPrincipal CustomUserDetails userDetails,
                            HttpServletRequest request) {
         followService.unfollow(userDetails.getUserId(), userId);
-        return "redirect:" + getPreviousPage(request);
+        return "redirect:" + safeRedirectPath(request);
     }
 
-    /** Referer ヘッダーから遷移元ページを取得する（なければ霊園一覧へ） */
-    private String getPreviousPage(HttpServletRequest request) {
+    /**
+     * Referer ヘッダーから安全なリダイレクト先パスを返す。
+     *
+     * <p>オープンリダイレクト対策として、パス部分のみを抽出し、
+     * 自アプリ内の許可パスに一致する場合のみ使用する。
+     * 許可外・不正・欠落時は /cemeteries にフォールバックする。
+     */
+    private static final String FALLBACK = "/cemeteries";
+
+    private String safeRedirectPath(HttpServletRequest request) {
         String referer = request.getHeader("Referer");
-        return (referer != null) ? referer : "/cemeteries";
+        if (referer == null) {
+            return FALLBACK;
+        }
+        try {
+            String path = URI.create(referer).getPath();
+            if (isAllowedPath(path)) {
+                return path;
+            }
+        } catch (IllegalArgumentException e) {
+            // 不正な URI はフォールバック
+        }
+        return FALLBACK;
+    }
+
+    /** 自アプリ内の許可パスか検証する */
+    private boolean isAllowedPath(String path) {
+        if (path == null) {
+            return false;
+        }
+        return path.equals("/cemeteries")
+                || path.startsWith("/cemeteries/")
+                || path.equals("/mypage");
     }
 }

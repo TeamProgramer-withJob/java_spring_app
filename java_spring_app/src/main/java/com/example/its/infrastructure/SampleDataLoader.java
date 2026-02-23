@@ -1,6 +1,7 @@
 package com.example.its.infrastructure;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.ClassPathResource;
@@ -32,7 +33,7 @@ public class SampleDataLoader implements CommandLineRunner {
     }
 
     private void loadSampleImage(Long memoryId, String resourcePath, String contentType) {
-        ClassPathResource resource = new ClassPathResource(resourcePath);
+        ClassPathResource resource = new ClassPathResource(Objects.requireNonNull(resourcePath));
         if (!resource.exists()) {
             return; // ファイルがなければスキップ（画像なしで起動できる）
         }

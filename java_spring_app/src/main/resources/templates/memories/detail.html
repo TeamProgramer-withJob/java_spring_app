@@ -37,6 +37,10 @@
     <div class="mt-3 d-flex align-items-center gap-3">
         <a th:href="@{/cemeteries/{id}(id=${cemetery.id})}">← [[${cemetery.name}]] に戻る</a>
 
+        <a th:if="${isAuthor}"
+           th:href="@{/cemeteries/{cid}/memories/{mid}/edit(cid=${cemetery.id},mid=${memory.id})}"
+           class="btn btn-sm btn-outline-primary">編集</a>
+
         <form th:if="${isAuthor}"
               th:action="@{/cemeteries/{cid}/memories/{mid}/delete(cid=${cemetery.id},mid=${memory.id})}"
               method="post"

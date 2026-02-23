@@ -60,6 +60,30 @@ public class MemoryService {
     }
 
     /**
+     * 思い出を編集する。投稿者本人のみ編集可能。
+     * 画像が新たに添付された場合は画像も更新する。
+     */
+    @Transactional
+    public void update(Long memoryId, MemoryForm form, Long userId) throws IOException {
+        MemoryEntity memory = memoryRepository.findById(memoryId)
+                .orElseThrow(() -> new IllegalArgumentException("思い出が見つかりません (id=" + memoryId + ")"));
+        if (!memory.getAuthorId().equals(userId)) {
+            throw new IllegalStateException("編集権限がありません");
+        }
+        memory.setTitle(form.getTitle());
+        memory.setBody(form.getBody());
+
+        MultipartFile image = form.getImage();
+        if (image != null && !image.isEmpty()) {
+            memory.setImageData(image.getBytes());
+            memory.setImageContentType(image.getContentType());
+            memoryRepository.updateWithImage(memory);
+        } else {
+            memoryRepository.update(memory);
+        }
+    }
+
+    /**
      * 思い出を作成する。画像が添付されていれば DB に BLOB として保存する。
      */
     @Transactional

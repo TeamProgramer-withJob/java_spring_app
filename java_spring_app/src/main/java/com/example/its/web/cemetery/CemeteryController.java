@@ -59,6 +59,40 @@ public class CemeteryController {
         return "redirect:/cemeteries/" + created.getId();
     }
 
+    /** 霊園編集フォームを表示する（オーナー本人のみ） */
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable Long id, Model model,
+                               @AuthenticationPrincipal CustomUserDetails userDetails) {
+        CemeteryEntity cemetery = cemeteryService.findById(id);
+        if (!cemetery.getOwnerId().equals(userDetails.getUserId())) {
+            return "redirect:/cemeteries/" + id;
+        }
+        CemeteryForm form = new CemeteryForm();
+        form.setName(cemetery.getName());
+        form.setDescription(cemetery.getDescription());
+        model.addAttribute("cemetery", cemetery);
+        model.addAttribute("cemeteryForm", form);
+        return "cemeteries/edit";
+    }
+
+    /** 霊園を更新する（オーナー本人のみ） */
+    @PostMapping("/{id}/edit")
+    public String update(
+            @PathVariable Long id,
+            @Validated @ModelAttribute CemeteryForm cemeteryForm,
+            BindingResult bindingResult,
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("cemetery", cemeteryService.findById(id));
+            return "cemeteries/edit";
+        }
+
+        cemeteryService.update(id, cemeteryForm, userDetails.getUserId());
+        return "redirect:/cemeteries/" + id;
+    }
+
     /** 霊園を削除する（オーナー本人のみ） */
     @PostMapping("/{id}/delete")
     public String delete(

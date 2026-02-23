@@ -6,7 +6,8 @@
       "runtimeExecutable": "cmd",
       "runtimeArgs": ["/c", "gradlew.bat", "bootRun"],
       "cwd": "java_spring_app",
-      "port": 8080
+      "port": 8080,
+      "autoPort": true
     }
   ]
 }

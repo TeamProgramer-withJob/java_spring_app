@@ -71,6 +71,43 @@ public class MemoryController {
         return "memories/detail";
     }
 
+    /** 思い出編集フォームを表示する（投稿者本人のみ） */
+    @GetMapping("/{memoryId}/edit")
+    public String showEditForm(@PathVariable Long cemeteryId, @PathVariable Long memoryId,
+                               Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        MemoryEntity memory = memoryService.findById(memoryId);
+        if (!memory.getAuthorId().equals(userDetails.getUserId())) {
+            return "redirect:/cemeteries/" + cemeteryId + "/memories/" + memoryId;
+        }
+        MemoryForm form = new MemoryForm();
+        form.setTitle(memory.getTitle());
+        form.setBody(memory.getBody());
+        model.addAttribute("cemetery", cemeteryService.findById(cemeteryId));
+        model.addAttribute("memory", memory);
+        model.addAttribute("memoryForm", form);
+        return "memories/edit";
+    }
+
+    /** 思い出を更新する（投稿者本人のみ） */
+    @PostMapping("/{memoryId}/edit")
+    public String update(
+            @PathVariable Long cemeteryId,
+            @PathVariable Long memoryId,
+            @Validated @ModelAttribute MemoryForm memoryForm,
+            BindingResult bindingResult,
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            Model model) throws IOException {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("cemetery", cemeteryService.findById(cemeteryId));
+            model.addAttribute("memory", memoryService.findById(memoryId));
+            return "memories/edit";
+        }
+
+        memoryService.update(memoryId, memoryForm, userDetails.getUserId());
+        return "redirect:/cemeteries/" + cemeteryId + "/memories/" + memoryId;
+    }
+
     /** 思い出を削除する（投稿者本人のみ） */
     @PostMapping("/{memoryId}/delete")
     public String delete(

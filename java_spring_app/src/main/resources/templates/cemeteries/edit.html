@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::body})}">
+<head>
+    <title th:text="${cemetery.name} + ' - 編集 | 結びの霊園'">霊園を編集 | 結びの霊園</title>
+</head>
+<body>
+<div class="row justify-content-center mt-4">
+    <div class="col-md-7">
+
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/cemeteries}">霊園一覧</a></li>
+                <li class="breadcrumb-item">
+                    <a th:href="@{/cemeteries/{id}(id=${cemetery.id})}" th:text="${cemetery.name}"></a>
+                </li>
+                <li class="breadcrumb-item active">編集</li>
+            </ol>
+        </nav>
+
+        <h2 class="mb-4">霊園ページを編集する</h2>
+
+        <form th:action="@{/cemeteries/{id}/edit(id=${cemetery.id})}"
+              th:object="${cemeteryForm}"
+              method="post">
+
+            <div class="mb-3">
+                <label for="name" class="form-label">霊園名 <span class="text-danger">*</span></label>
+                <input type="text" id="name" th:field="*{name}"
+                       class="form-control" th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'"
+                       placeholder="例：田中家の思い出">
+                <div class="invalid-feedback" th:errors="*{name}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">説明（任意）</label>
+                <textarea id="description" th:field="*{description}" rows="4"
+                          class="form-control" th:classappend="${#fields.hasErrors('description')} ? 'is-invalid'"
+                          placeholder="この霊園について説明してください"></textarea>
+                <div class="invalid-feedback" th:errors="*{description}"></div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">保存する</button>
+                <a th:href="@{/cemeteries/{id}(id=${cemetery.id})}" class="btn btn-outline-secondary">キャンセル</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

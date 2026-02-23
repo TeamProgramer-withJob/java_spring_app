@@ -69,6 +69,7 @@
     </div>
 
     <div th:if="${isOwner}" class="mt-4 d-flex align-items-center gap-3">
+        <a th:href="@{/cemeteries/{id}/edit(id=${cemetery.id})}" class="btn btn-sm btn-outline-primary">この霊園を編集する</a>
         <a th:href="@{/cemeteries/new}" class="btn btn-sm btn-outline-secondary">別の霊園を作成する</a>
         <form th:action="@{/cemeteries/{id}/delete(id=${cemetery.id})}"
               method="post"

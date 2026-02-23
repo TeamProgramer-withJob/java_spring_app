@@ -68,6 +68,18 @@ public interface MemoryRepository {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(MemoryEntity memory);
 
+    /** テキスト項目（タイトル・本文）のみ更新する */
+    @Update("UPDATE memories SET title = #{title}, body = #{body} WHERE id = #{id}")
+    void update(MemoryEntity memory);
+
+    /** テキスト項目と画像をまとめて更新する */
+    @Update("""
+            UPDATE memories SET title = #{title}, body = #{body},
+                   image_data = #{imageData,jdbcType=VARBINARY}, image_content_type = #{imageContentType}
+            WHERE id = #{id}
+            """)
+    void updateWithImage(MemoryEntity memory);
+
     /** サンプルデータ投入用：image_data が未設定の場合のみ画像を更新する */
     @Update("UPDATE memories SET image_data = #{imageData,jdbcType=VARBINARY}, image_content_type = #{contentType} WHERE id = #{id} AND image_data IS NULL")
     void updateImageIfAbsent(@Param("id") Long id, @Param("imageData") byte[] imageData, @Param("contentType") String contentType);

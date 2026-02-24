@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::body})}">
+<head>
+    <title>課題一覧 | 課題管理アプリケーション</title>
+</head>
+<body>
+<h1 class="mt-3">課題一覧</h1>
+<a href="../index.html" th:href="@{/}">トップページ</a>
+<a href="./creationForm.html" th:href="@{/memories/new}">作成</a>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>タイトル</th>
+    <th>詳細</th>
+    <th>画像</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="memo : ${memories}">
+    <td th:text="${memo.title}">(title)</td>
+    <td>
+      <a href="./detail.html" th:href="@{/memories/{memoId}(memoId=${memo.id})}" th:text="${memo.details}">
+        (details)
+      </a>
+    </td>
+    <td>
+      <p th:text="${memo.filename}">(filename)</p>
+    </td>
+    <td>
+      <a href="./edit/id" th:href="@{/memories/edit/{id}(id=${memo.id})}" class="btn btn-warning">編集</a> 
+      <a href="./delete/id" th:href="@{/memories/delete/{id}(id=${memo.id})}" onclick="return confirm('本当に削除してもよろしいですか？');" 
+   class="btn btn-danger">削除</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

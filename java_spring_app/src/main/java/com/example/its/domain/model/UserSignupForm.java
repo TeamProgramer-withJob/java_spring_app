@@ -1,6 +1,7 @@
 package com.example.its.domain.model;
 
 import com.example.its.domain.annot.PasswordMatches;
+import com.example.its.domain.annot.ValidateDbFieldUnique;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -12,7 +13,7 @@ import lombok.Data;
 public class UserSignupForm {
 	@NotBlank(message="必須入力項目です。")
 	@Size(max=128, message="128文字以内で入力してください。")
-    private String username;
+    private String name;
 
 	@NotBlank(message="必須入力項目です。")
 	@Size(max=20, message="パスワードは20文字以内で入力してください。")
@@ -21,4 +22,9 @@ public class UserSignupForm {
     private String password;
 
 	private String password2;
+	
+	@NotBlank(message="必須入力項目です。")
+	@Size(max=256, message="256文字以内で入力してください。")
+	@ValidateDbFieldUnique(table = "users", field = "email", message = "入力した電子メールはすでに利用されています。")
+    private String email;
 }

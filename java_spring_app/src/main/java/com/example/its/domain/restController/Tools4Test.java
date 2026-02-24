@@ -1,5 +1,6 @@
 package com.example.its.domain.restController;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +13,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Tools4Test {
 	private final PasswordEncoder pwdEncoder;
-	
+
+	//@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/encode")
 	public String encodePwd() {
 		return "@@" + pwdEncoder.encode("password") + "@@";

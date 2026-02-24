@@ -13,9 +13,6 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
-import org.springframework.security.web.util.matcher.AnyRequestMatcher;
-
-import com.example.its.WebAuthFailedHandler;
 
 import javax.sql.DataSource;
 
@@ -27,9 +24,9 @@ public class SecurityConfig {
     @Bean
     public UserDetailsManager authenticateUserByDb(DataSource dataSource) {
         JdbcUserDetailsManager jdbcUserManager = new JdbcUserDetailsManager(dataSource);
-        jdbcUserManager.setUsersByUsernameQuery("select username, password, true as enabled from users where username=?");
+        jdbcUserManager.setUsersByUsernameQuery("select email, password, true as enabled from users where email=?");
         // value in role must be ROLE_nameOfRle, the value in password must have a prefix like {noop}
-        jdbcUserManager.setAuthoritiesByUsernameQuery("select username, 'ROLE_ADMIN' as role from users where username=?");
+        jdbcUserManager.setAuthoritiesByUsernameQuery("select email, 'ROLE_' || role as role from users where email=?");
 
         return jdbcUserManager;
     }
@@ -41,7 +38,7 @@ public class SecurityConfig {
             login.loginPage("/login")
                  .loginProcessingUrl("/authenticateTheUser")
 //                 .failureHandler(new WebAuthFailedHandler())
-                 .defaultSuccessUrl("/issues?lang=ja")
+                 .defaultSuccessUrl("/memories")
                  .permitAll();
         });
         
@@ -53,10 +50,11 @@ public class SecurityConfig {
         	      .deleteCookies("web_service_its");
         });
 
-        String[] permittedUrls = {"/css/**", "/webjars/**","/h2-console/**","/signup/**","/test/**","/error/**","/access/denied/**"};
+        String[] permittedUrls = {"/","/css/**", "/webjars/**","/h2-console/**","/signup/**","/contacts/**","/test/**","/error/**","/access/denied/**"};
         http.authorizeHttpRequests( auth -> {
             auth.requestMatchers(permittedUrls).permitAll()
-                .requestMatchers("/issues/**").hasAnyRole("ADMIN", "USER")
+                .requestMatchers("/memories/**").hasAnyRole("ADMIN", "USER")
+                .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
         })
         .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
@@ -76,48 +74,3 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
-
-/*
-@Configuration
-@EnableWebSecurity
-@EnableMethodSecurity
-public class SecurityConfig {
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // H2 Console configuration
-        http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/login/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/h2-console/**")
-                )
-                .headers(headers -> headers
-                        .frameOptions(frameOptions -> frameOptions.disable())
-                )
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .permitAll()
-                );
-
-        return http.build();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return new ProviderManager(authProvider);
-    }
-
-    @Bean
-    @SuppressWarnings("deprecation")
-    public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
-    }
-}
-*/

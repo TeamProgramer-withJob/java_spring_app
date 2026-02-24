@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.its.domain.aop.LogExecuteInfo;
-import com.example.its.domain.issue.service.User2Service;
 import com.example.its.domain.model.UserSignupForm;
+import com.example.its.domain.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -30,21 +30,13 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 public class IndexController {
-	private final User2Service userService;
+	private final UserService userService;
+//	private final MessageSource messageSource;
 	
-	private final MessageSource messageSource;
-	
-	
-    @GetMapping("/test")
-    public String test(Model model) {
-        // test2.htmlにリダイレクトされるので、ここでは何もする必要はありません
-    	String htmlContent = "<h1>test</h1>";
-    	List<String> myList = Arrays.asList("鍾志華", "Tom", "Bob");
-        model.addAttribute("mylist", myList);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:sss");
-        model.addAttribute("today", sdf.format(LocalDateTime.now()));
-        return "test";
-    }
+//    @GetMapping("/contacts")
+//    public String contactList(Model model) {
+//        return "contact-list";
+//    }
     
     @GetMapping
     public String index() {
@@ -58,12 +50,11 @@ public class IndexController {
     }
 
     @GetMapping("/signup")
-    public String showSignupForm(@ModelAttribute UserSignupForm form) {
-    	
+    public String showSignupForm(@ModelAttribute("data") UserSignupForm form) {
     	return "signup";
     }
     @PostMapping("/signup")
-    public String userSignup(@Validated UserSignupForm form, BindingResult result, Model model) {
+    public String userSignup(@Validated @ModelAttribute("data") UserSignupForm form, BindingResult result, Model model) {
     	if (result.hasErrors()) {
     		return showSignupForm(form);
     	}

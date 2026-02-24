@@ -20,3 +20,4 @@
 | T-20260223-009 | done | Claude -> Codex | エラーページ（403/404/500）デザイン改善 | 2026-02-23 | 2026-02-23 |
 | T-20260223-010 | done | Claude -> Codex | Playwright E2Eシナリオ拡張（ログイン成功/霊園作成） | 2026-02-23 | 2026-02-23 |
 | T-20260223-011 | done | Claude -> Codex | E2E実行安定化（DB後片付け / webServer運用改善） | 2026-02-23 | 2026-02-23 |
+| T-20260224-012 | done | Codex | GitHub Actions CI追加（push/PRで Gradle + Playwright 自動実行）+ docs整合更新 | 2026-02-24 | 2026-02-24 |

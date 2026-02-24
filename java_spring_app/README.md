@@ -119,7 +119,7 @@ src/
 ### テスト方針
 
 - **現在**: 単体テスト / MockMvc による Controller テスト中心
-- **今後**: 重要な画面導線には E2E テストの追加を予定
+- **E2E**: Playwright による主要導線（ログイン画面・ログイン成功・霊園作成）を実装済み
 - テストファイルは `src/test/java/com/example/its/web/` 配下に配置
 
 ### カバレッジレポート（JaCoCo）
@@ -169,6 +169,16 @@ npx playwright test
 
 > `playwright.config.ts` は `reuseExistingServer` を有効にしているため、
 > アプリ起動済みであれば `npx playwright test` は既存のプロセスを再利用します。
+
+### CI（GitHub Actions）
+
+`push` / `pull_request` をトリガーに、リモートで以下を自動実行します。
+
+1. `./gradlew test`
+2. `npx playwright test`
+
+設定ファイルは `.github/workflows/ci.yml` です。  
+E2E 失敗時は `playwright-report/` と `test-results/` が Artifact として保存されます。
 
 ### トラブルシューティング
 ```bash

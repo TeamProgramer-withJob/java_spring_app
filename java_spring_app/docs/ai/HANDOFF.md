@@ -281,3 +281,37 @@
 - 判定: `OK`
 - 指摘事項: なし
 - 次アクション: E2E シナリオ拡張（思い出投稿/フォロー導線）または CI 実行基盤整備へ進行
+
+---
+
+## Task ID: T-20260224-012
+### 依頼内容（Codex）
+- 目的: push/PR ごとにリモートで自動テストを実行する CI 基盤を追加し、手動テスト依存を減らす
+- 変更対象: `.github/workflows/ci.yml`、README.md、docs/ROADMAP.md、docs/ACTION_ITEMS_v0.1.md、docs/ai/TASK_QUEUE.md、docs/CHANGELOG.md、docs/ai/HANDOFF.md
+- 非対象: 本番コード（`src/main/java`）変更、E2Eシナリオの追加実装
+- 完了条件: CIワークフロー追加、`./gradlew test` と `npx playwright test` の成功確認、docs整合更新
+
+### 実行結果（Codex）
+- 変更ファイル:
+  - .github/workflows/ci.yml（新規）
+  - README.md
+  - docs/ROADMAP.md
+  - docs/ACTION_ITEMS_v0.1.md
+  - docs/ai/TASK_QUEUE.md
+  - docs/CHANGELOG.md
+  - docs/ai/HANDOFF.md
+- 実施内容:
+  - GitHub Actions で push/PR トリガーの CI を追加（Java 21 + Node 20）
+  - CIで `./gradlew test` と `npx playwright test` を実行し、Playwright成果物をArtifact保存
+  - README に CI 運用説明を追加
+  - ROADMAP/ACTION_ITEMS/TASK_QUEUE を最新状態へ更新
+- テスト結果:
+  - `./gradlew test` 成功
+  - `npx playwright test` 成功
+- 残課題/懸念:
+  - CI上での初回実行時間は Playwright ブラウザインストール分だけ長くなる
+
+### レビュー結果（Codex -> チーム）
+- 判定: `OK`
+- 指摘事項: なし
+- 次アクション: E2Eシナリオの次拡張（思い出投稿/フォロー導線）と CI 必須化（Branch protection）を検討

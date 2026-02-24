@@ -25,20 +25,25 @@ jobs:
         with:
           node-version: "20"
           cache: npm
+          cache-dependency-path: java_spring_app/package-lock.json
 
       - name: Grant execute permission for Gradle Wrapper
-        run: chmod +x ./gradlew
+        run: chmod +x ./java_spring_app/gradlew
 
       - name: Run unit/integration tests
+        working-directory: java_spring_app
         run: ./gradlew --no-daemon test
 
       - name: Install Node dependencies
+        working-directory: java_spring_app
         run: npm ci
 
       - name: Install Playwright Chromium
+        working-directory: java_spring_app
         run: npx playwright install --with-deps chromium
 
       - name: Run Playwright E2E
+        working-directory: java_spring_app
         env:
           CI: "true"
         run: npx playwright test
@@ -48,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
-          path: playwright-report/
+          path: java_spring_app/playwright-report/
           if-no-files-found: ignore
 
       - name: Upload Playwright results
@@ -56,5 +61,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: test-results/
+          path: java_spring_app/test-results/
           if-no-files-found: ignore

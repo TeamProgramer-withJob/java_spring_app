@@ -145,7 +145,7 @@ npm install
 npx playwright install chromium
 
 # 3. テスト実行
-#    アプリが未起動の場合、Playwright が ./gradlew bootRun で自動起動します
+#    アプリが未起動の場合、Playwright が自動起動します
 npx playwright test
 
 # または package.json のスクリプト経由
@@ -153,6 +153,22 @@ npm run test:e2e
 ```
 
 テスト失敗時はスクリーンショットが `test-results/` に保存されます。
+
+#### Windows 環境での推奨手順
+
+Playwright の webServer 自動起動は Windows 環境では不安定な場合があります。
+**アプリを先に手動起動してから E2E を実行する**方法が最も安定します。
+
+```bash
+# ターミナル 1: アプリを起動したままにする
+./gradlew bootRun
+
+# ターミナル 2: E2E テスト実行（アプリを再起動しない）
+npx playwright test
+```
+
+> `playwright.config.ts` は `reuseExistingServer` を有効にしているため、
+> アプリ起動済みであれば `npx playwright test` は既存のプロセスを再利用します。
 
 ### トラブルシューティング
 ```bash

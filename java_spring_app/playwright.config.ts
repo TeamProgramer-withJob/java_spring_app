@@ -17,7 +17,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: './gradlew bootRun',
+    // Windows では gradlew.bat、macOS/Linux では ./gradlew を使用
+    command: process.platform === 'win32' ? 'gradlew.bat bootRun' : './gradlew bootRun',
     url: 'http://localhost:8080',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,

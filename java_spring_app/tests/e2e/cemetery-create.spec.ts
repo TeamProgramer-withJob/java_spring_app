@@ -7,6 +7,7 @@ import { test, expect } from '@playwright/test';
  * - ログイン済み状態で霊園作成フォームへ遷移できること
  * - 必須項目（霊園名）を入力して作成できること
  * - 作成後に詳細ページへ遷移し、作成した霊園名が表示されること
+ * - 作成したテストデータを削除し、DB を汚染しないこと（後片付け）
  *
  * 前提: data.sql で用意された初期ユーザー tom / password を使用
  */
@@ -43,5 +44,12 @@ test.describe('霊園作成', () => {
 
     // 詳細ページに作成した霊園名が表示されること
     await expect(page.locator('h2')).toContainText(cemeteryName);
+
+    // 後片付け: 作成したテストデータを削除して DB 汚染を防ぐ
+    // 削除確認ダイアログを自動承認してから削除ボタンをクリック
+    page.on('dialog', dialog => dialog.accept());
+    await page.getByRole('button', { name: 'この霊園を削除する' }).click();
+    // 削除後は霊園一覧へリダイレクト
+    await expect(page).toHaveURL(/\/cemeteries$/);
   });
 });

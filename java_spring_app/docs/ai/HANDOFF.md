@@ -253,3 +253,31 @@
 - 判定: `OK`
 - 指摘事項: なし
 - 次アクション: E2E実行安定化（テストデータ後片付け / webServer運用）を次タスク候補として検討
+
+---
+
+## Task ID: T-20260223-011
+### 依頼内容（Codex -> Claude）
+- 目的: Playwright E2E の実行安定性向上（DB後片付け・Windows向けwebServer運用改善）
+- 変更対象: playwright.config.ts、tests/e2e/cemetery-create.spec.ts、README.md
+- 非対象: 本番コード変更、既存単体/統合テスト修正、ROADMAP/ACTION_ITEMS/docs/ai 更新
+- 完了条件: `npx playwright test` を2回連続成功、対象3ファイルのみ変更
+
+### 実行結果（Claude -> Codex）
+- 変更ファイル:
+  - playwright.config.ts
+  - tests/e2e/cemetery-create.spec.ts
+  - README.md
+- 実施内容:
+  - webServer.command を OS 判定で分岐（Windows: gradlew.bat / macOS・Linux: ./gradlew）
+  - 霊園作成E2Eの末尾に削除後片付けを追加（確認ダイアログ自動承認 + 一覧遷移確認）
+  - README に Windows 実行時の推奨手順を追記
+- テスト結果:
+  - `npx playwright test` 2回連続成功（各回 4 passed）
+- 残課題/懸念:
+  - CIでの webServer 自動起動（process.env.CI=true 時）の追加検証余地あり
+
+### レビュー結果（Codex -> チーム）
+- 判定: `OK`
+- 指摘事項: なし
+- 次アクション: E2E シナリオ拡張（思い出投稿/フォロー導線）または CI 実行基盤整備へ進行

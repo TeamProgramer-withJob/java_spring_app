@@ -11,32 +11,32 @@
 
 ### database接続ユーザーuiditsの作成
 
-pgAdminを開き、PostgreSQLと接続する。
-Login/Group Roles -> Create -> Login/Group Roleを選択し、以下のようにユーザーuiditsを作成する。
-General: Name: uidits
-Privileges: Can login? ON, Create database? ON, Inherit rights from the parent roles? ON
-SAVEボタンをクリックしてユーザー登録する
+pgAdminを開き、PostgreSQLと接続する。  
+Login/Group Roles -> Create -> Login/Group Roleを選択し、以下のようにユーザーuiditsを作成する。  
+General: Name: uidits  
+Privileges: Can login? ON, Create database? ON, Inherit rights from the parent roles? ON  
+SAVEボタンをクリックしてユーザー登録する  
 
 ### database itsの作成
 
-Databasesをマウス右クリックし、Create -> Databaseを選択し、以下のようにdatabaseを作成する。
-General: Database: its, Owner: uidits, Comment: 任意
-Definition: Encoding: UTF8
-Tablespace: pg_default
-Locale Provider: libc
-Collation: Japanese_Japan.932
-Character type: Japanese_Japan.932
-SAVEボタンをクリックしてdatabase itsを作成する
+Databasesをマウス右クリックし、Create -> Databaseを選択し、以下のようにdatabaseを作成する。  
+General: Database: its, Owner: uidits, Comment: 任意   
+Definition: Encoding: UTF8  
+Tablespace: pg_default  
+Locale Provider: libc  
+Collation: Japanese_Japan.932  
+Character type: Japanese_Japan.932  
+SAVEボタンをクリックしてdatabase itsを作成する  
 
 ### schema itsの作成
 
-pgAdminを開き、uiditsでitsデータベースと接続して、itsをマウス右クリックでQuery Toolを開く。Query Toolで以下のコマンドを実行する
+pgAdminを開き、uiditsでitsデータベースと接続して、itsをマウス右クリックでQuery Toolを開く。Query Toolで以下のコマンドを実行する  
 
-CREATE SCHEMA IF NOT EXISTS its AUTHORIZATION uidits;
+CREATE SCHEMA IF NOT EXISTS its AUTHORIZATION uidits;  
 
 ### tablesの作成
 
-src/main/resources/schema4postgreSQL.sqlを開き、以下の行以降をQuery Toolにコピーして実行する
+src/main/resources/schema4postgreSQL.sqlを開き、以下の行以降をQuery Toolにコピーして実行する  
 
 CREATE TABLE IF NOT EXISTS its.users
 ...

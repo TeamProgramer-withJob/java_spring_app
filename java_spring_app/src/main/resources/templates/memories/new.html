@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::body})}">
+<head>
+    <title th:text="${cemetery.name} + ' - 思い出を投稿 | 結びの霊園'">思い出を投稿 | 結びの霊園</title>
+</head>
+<body>
+<div class="row justify-content-center mt-4">
+    <div class="col-md-7">
+
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/cemeteries}">霊園一覧</a></li>
+                <li class="breadcrumb-item">
+                    <a th:href="@{/cemeteries/{id}(id=${cemetery.id})}" th:text="${cemetery.name}"></a>
+                </li>
+                <li class="breadcrumb-item active">思い出を投稿</li>
+            </ol>
+        </nav>
+
+        <h2 class="mb-4">思い出を投稿する</h2>
+
+        <!-- グローバルエラー -->
+        <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+        <form th:action="@{/cemeteries/{id}/memories(id=${cemetery.id})}"
+              th:object="${memoryForm}"
+              method="post"
+              enctype="multipart/form-data">
+
+            <div class="mb-3">
+                <label for="title" class="form-label">タイトル <span class="text-danger">*</span></label>
+                <input type="text" id="title" th:field="*{title}"
+                       class="form-control" th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'"
+                       placeholder="例：家族で訪れた秋の日">
+                <div class="invalid-feedback" th:errors="*{title}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="body" class="form-label">本文 <span class="text-danger">*</span></label>
+                <textarea id="body" th:field="*{body}" rows="6"
+                          class="form-control" th:classappend="${#fields.hasErrors('body')} ? 'is-invalid'"
+                          placeholder="思い出を自由に書いてください"></textarea>
+                <div class="invalid-feedback" th:errors="*{body}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="image" class="form-label">画像（任意）</label>
+                <input type="file" id="image" th:field="*{image}"
+                       class="form-control" th:classappend="${#fields.hasErrors('image')} ? 'is-invalid'"
+                       accept="image/*">
+                <div class="invalid-feedback" th:errors="*{image}"></div>
+                <div class="form-text">JPG・PNG・GIF など。最大 10MB。</div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">投稿する</button>
+                <a th:href="@{/cemeteries/{id}(id=${cemetery.id})}" class="btn btn-outline-secondary">キャンセル</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,12 +1,18 @@
 package com.example.its.domain.auth;
 
-import lombok.AllArgsConstructor;
+import java.time.LocalDateTime;
+
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 public class User {
 
+    private Long id;
     private String username;
+    private String displayName;
+    private String email;
     private String password;
+    private String bio;
+    private String role;
+    private LocalDateTime createdAt;
 }

@@ -20,7 +20,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     	  return userRepository.findByUsername(username)
                   .map(
                           user -> new CustomUserDetails(
+                                  user.getId(),
                                   user.getUsername(),
+                                  user.getDisplayName(),
                                   user.getPassword(),
                                   Collections.emptyList()
                           )

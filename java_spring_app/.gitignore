@@ -35,3 +35,131 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### AI Development ###
+AI_INSTRUCTIONS.md
+.claude/
+.serena/logs/
+
+### OS specific ###
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.directory
+
+### Environment specific ###
+# 環境固有の設定ファイル
+.env
+.env.local
+.env.*.local
+application-local.properties
+application-local.yml
+
+# ログファイル
+*.log
+logs/
+log/
+
+# 一時ファイル
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+### Database ###
+# H2データベースファイル（開発時の永続化データ）
+*.db
+*.mv.db
+*.trace.db
+data/
+h2/
+
+### IDE個人設定 ###
+# Eclipse個人設定
+*.launch
+.metadata
+
+# IntelliJ IDEA個人設定
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/usage.statistics.xml
+.idea/shelf/
+.idea/dictionaries
+.idea/httpRequests/
+
+# VS Code個人設定
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+
+### Build tool cache ###
+# Gradle
+.gradle/
+gradle-app.setting
+!gradle-wrapper.jar
+!gradle-wrapper.properties
+
+# Maven (将来使う場合)
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+
+### Node.js / Playwright ###
+node_modules/
+playwright-report/
+test-results/
+
+### Testing ###
+# テストカバレッジレポート
+coverage/
+*.coverage
+.nyc_output/
+
+### Java specific ###
+# コンパイル済みクラスファイル
+*.class
+
+# パッケージファイル
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# ただしGradle Wrapperは除外
+!gradle-wrapper.jar
+
+# JVM crash logs
+hs_err_pid*
+replay_pid*
+
+### Security ###
+# 機密情報を含む可能性のあるファイル
+secrets.properties
+credentials.json
+*.key
+*.pem
+*.p12
+*.jks
+*.keystore
+
+### Personal notes ###
+# 個人メモ
+TODO.md
+NOTES.md
+scratch.txt

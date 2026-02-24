@@ -38,41 +38,41 @@ CREATE SCHEMA IF NOT EXISTS its AUTHORIZATION uidits;
 
 src/main/resources/schema4postgreSQL.sqlを開き、以下の行以降をQuery Toolにコピーして実行する  
 
-CREATE TABLE IF NOT EXISTS its.users
-...
+CREATE TABLE IF NOT EXISTS its.users  
+...  
 
 ### 初期管理ユーザーの作成
 
-下記の内容をQuery Toolにコピーして実行する
-set search_path ='its';
+下記の内容をQuery Toolにコピーして実行する  
+set search_path ='its';  
 insert into users(name,password,email,role,created_at,last_updated) 
-values('user 01','$2a$10$BsF1RMe/Vf0dXzTmRbO11O6UUqOD/lkL5ygspZ/bykle1pQcMl6YG','test01@test.example.org','ADMIN',current_timestamp,current_timestamp);
+values('user 01','$2a$10$BsF1RMe/Vf0dXzTmRbO11O6UUqOD/lkL5ygspZ/bykle1pQcMl6YG','test01@test.example.org','ADMIN',current_timestamp,current_timestamp);  
 
-ログイン画面で電子メール: test01@test.example.orgとパスワード: passwordでログインできる
+ログイン画面で電子メール: test01@test.example.orgとパスワード: passwordでログインできる。  
 
 ## Eclipseにprojectの取り込む
 
-後ほど追記
+後ほど追記  
 
 ## webアプリ
 
 ### ログイン
 
-Tomcat起動後に、http://localhost:8080にアクセスする。
-登録済み管理者または一般ユーザーの電子メールとパスワードでログインできる。
+Tomcat起動後に、http://localhost:8080にアクセスする。  
+登録済み管理者または一般ユーザーの電子メールとパスワードでログインできる。  
 
 ### ユーザーサインアップ
 
-ナビゲーションバーから「サインアップ」をクリックし、ユーザー名、パスワードとパスワード確認、電子メールを入力してサインアップボタンをクリックする。
+ナビゲーションバーから「サインアップ」をクリックし、ユーザー名、パスワードとパスワード確認、電子メールを入力してサインアップボタンをクリックする。  
 
-※ 電子メールのフォーマットチェックは未実装
+※ 電子メールのフォーマットチェックは未実装  
 
 ### 思い出一覧
 
-ログイン後のデフォルト画面は思い出一覧画面となる。
-「作成」リンクをクリックし、画像付き思い出の投稿ができる。
+ログイン後のデフォルト画面は思い出一覧画面となる。  
+「作成」リンクをクリックし、画像付き思い出の投稿ができる。  
 
-「詳細」から内容のリンク（今後、リンクをタイトルに移植する予定）をクリックし、思い出の詳細画面へ遷移できる
+「詳細」から内容のリンク（今後、リンクをタイトルに移植する予定）をクリックし、思い出の詳細画面へ遷移できる。  
 
 ### 思い出の投稿
 
@@ -80,8 +80,8 @@ Tomcat起動後に、http://localhost:8080にアクセスする。
 
 ### 思い出の詳細と「いいね」
 
-※ 作りながら、DBスキーマ、画面と機能を作っていく予定。完成した機能の説明はここで追記していく。
+※ 作りながら、DBスキーマ、画面と機能を作っていく予定。完成した機能の説明はここで追記していく。  
 
 
-鍾 志華
-2026/02/24
+鍾 志華  
+2026/02/24  

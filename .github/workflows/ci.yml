@@ -30,6 +30,9 @@ jobs:
       - name: Grant execute permission for Gradle Wrapper
         run: chmod +x ./java_spring_app/gradlew
 
+      - name: Prepare SQLite data directory
+        run: mkdir -p ./java_spring_app/data
+
       - name: Run unit/integration tests
         working-directory: java_spring_app
         run: ./gradlew --no-daemon test

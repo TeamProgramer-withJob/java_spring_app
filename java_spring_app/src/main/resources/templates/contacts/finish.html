@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::body})}">
+<head>
+    <title>お問い合わせ完了 | 課題管理アプリケーション</title>
+</head>
+<body>
+<div class="mt-5 text-center">
+    <h1>お問い合わせを受け付けました</h1>
+    <p class="mt-3 text-muted">ご連絡いただきありがとうございます。<br>内容を確認の上、担当者よりご連絡いたします。</p>
+    <a th:href="@{/}" class="btn btn-primary mt-3">トップページへ戻る</a>
+</div>
+</body>
+</html>

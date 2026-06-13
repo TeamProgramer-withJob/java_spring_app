@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::body})}">
+<head>
+    <title>ニュース編集 | 課題管理アプリケーション</title>
+</head>
+<body>
+<h1 class="mt-3">ニュース編集</h1>
+<form th:action="@{/informations/{id}(id=${informationId})}" th:object="${informationForm}" method="post">
+    <input type="hidden" name="_method" value="put">
+    <div class="mb-3">
+        <label for="informationTitle" class="form-label">タイトル</label>
+        <input type="text" class="form-control" id="informationTitle" th:field="*{informationTitle}">
+        <div class="text-danger" th:if="${#fields.hasErrors('informationTitle')}" th:errors="*{informationTitle}"></div>
+    </div>
+    <div class="mb-3">
+        <label for="informationDetail" class="form-label">内容</label>
+        <textarea class="form-control" id="informationDetail" th:field="*{informationDetail}" rows="6"></textarea>
+        <div class="text-danger" th:if="${#fields.hasErrors('informationDetail')}" th:errors="*{informationDetail}"></div>
+    </div>
+    <button type="submit" class="btn btn-primary">更新する</button>
+    <a th:href="@{/informations/{id}(id=${informationId})}" class="btn btn-secondary ms-2">キャンセル</a>
+</form>
+</body>
+</html>

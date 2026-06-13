@@ -1,10 +1,29 @@
 create table issues (
 id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-summary VARCHAR(256) NOT NULl,
-description VARCHAR(256) NOT NULl
+summary VARCHAR(256) NOT NULL,
+description VARCHAR(256) NOT NULL
 );
 
 create table users (
 username varchar(50) not null primary key,
-password varchar(500) not null
+password varchar(500) not null,
+role varchar(50) not null default 'ROLE_USER'
+);
+
+create table informations (
+id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+information_title VARCHAR(256) NOT NULL,
+information_detail VARCHAR(2000) NOT NULL,
+created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+create table contacts (
+id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+name VARCHAR(100) NOT NULL,
+email VARCHAR(256) NOT NULL,
+subject VARCHAR(256) NOT NULL,
+message TEXT NOT NULL,
+created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );

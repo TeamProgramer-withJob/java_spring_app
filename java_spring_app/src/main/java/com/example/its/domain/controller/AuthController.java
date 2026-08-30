@@ -15,29 +15,27 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.its.domain.aop.LogExecuteInfo;
+import com.example.its.domain.model.InquiryForm;
 import com.example.its.domain.model.UserSignupForm;
 import com.example.its.domain.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-public class IndexController {
+public class AuthController {
 	private final UserService userService;
 //	private final MessageSource messageSource;
 	
-//    @GetMapping("/contacts")
-//    public String contactList(Model model) {
-//        return "contact-list";
-//    }
-    
     @GetMapping
     public String index() {
         return "index";

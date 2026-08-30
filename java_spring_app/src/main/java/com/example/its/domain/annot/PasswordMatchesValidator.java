@@ -1,5 +1,6 @@
 package com.example.its.domain.annot;
 
+import com.example.its.domain.model.UserEditForm;
 import com.example.its.domain.model.UserSignupForm;
 
 import jakarta.validation.ConstraintValidator;
@@ -9,8 +10,19 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
 
 	@Override
 	public boolean isValid(Object value, ConstraintValidatorContext context) {
-		UserSignupForm form = (UserSignupForm)value;
-		boolean matched = form.getPassword() != null && form.getPassword().equals(form.getPassword2());
+		String pwd1 = null;
+		String pwd2 = null;
+		if (value instanceof UserEditForm) {
+			UserEditForm form = (UserEditForm)value;
+			pwd1 = form.getPassword();
+			pwd2 = form.getPassword2();
+		} else {
+			UserSignupForm form = (UserSignupForm)value;
+			pwd1 = form.getPassword();
+			pwd2 = form.getPassword2();
+		}
+
+		boolean matched = pwd1 != null && pwd1.equals(pwd2);
 		if (!matched) {
 			context.disableDefaultConstraintViolation();
 			context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())

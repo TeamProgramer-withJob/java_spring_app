@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::body})}">
+<head>
+    <title>問合せ | 課題管理アプリケーション</title>
+</head>
+<body>
+<h1 class="mt-3">課題管理アプリケーション</h1>
+
+	<form action="#" th:action="${isEdit} ? @{/inquiries/edit/{id}(id=*{id}, page=${pageNo})} : @{/inquiries}" th:method="${isEdit} ? 'put' : 'post'" th:object="${inquiry}">
+    <div class="mt-3 col-md-6">
+        <label for="nameInput" class="form-label">氏名</label>
+        <input type="text" id="nameInput" name="name" th:field="*{name}" class="form-control"
+                    th:classappend="${#fields.hasErrors('name')} ? is-invalid" th:disabled="${isEdit}">
+        <p class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">(error)</p>
+    </div>
+    <div class="mt-3 col-md-6">
+        <label for="emailInput" class="form-label">電子メール</label>
+        <input type="text" id="emailInput" name="email" th:field="*{email}" class="form-control"
+                    th:classappend="${#fields.hasErrors('email')} ? is-invalid" th:disabled="${isEdit}">
+        <p class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">(error)</p>
+    </div>
+    <div class="mt-3 col-md-4">
+        <label for="subjectInput" class="form-label">件名</label>
+        <input type="text" id="subjectInput" name="subject" th:field="*{subject}" class="form-control"
+                    th:classappend="${#fields.hasErrors('subject')} ? is-invalid">
+        <p class="invalid-feedback" th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}">(error)</p>
+    </div>
+    <div class="mt-3 col-md-8">
+        <label for="messageInput" class="form-label">問合せ詳細</label>
+        <textarea id="messageInput" rows="6" th:field="*{message}" class="form-control"
+                  th:classappend="${#fields.hasErrors('message')} ? is-invalid"></textarea>
+        <p class="invalid-feedback" th:if="${#fields.hasErrors('message')}" th:errors="*{message}">(error)</p>
+    </div>
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">送信</button>
+    </div>
+</form>
+</body>
+</html>

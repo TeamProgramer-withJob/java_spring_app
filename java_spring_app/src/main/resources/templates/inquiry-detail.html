@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::body})}">
+<head>
+    <title>問合せ | 課題管理アプリケーション</title>
+</head>
+<body>
+<h1 class="mt-3">問合せの詳細</h1>
+<br>
+<a href="./list.html" th:href="@{/inquiries(page=${pageNo})}">一覧に戻る</a>
+<br>
+<br>
+<div th:object="${inquiry}">
+  <h2 th:text="*{subject}">(subject)</h2>
+  <p th:text="*{message}">(message)</p>
+  <br>Posted by <span th:text="*{name}">(name)</span> at 
+      <span th:text="${#temporals.format(inquiry.createdAt, 'yyyy/MM/dd HH:mm:ss', 'Asia/Tokyo')}">(createdAt)</span>
+</div>
+<br>
+<div th:if="${#authorization.expression('isAuthenticated()')}">
+  <a th:href="@{/inquiries/edit/{id}(id=${inquiry.id}, page=${pageNo})}" class="btn btn-warning">編集</a>
+  <a th:href="@{/inquiries/delete/{id}(id=${inquiry.id}, page=${pageNo})}" class="btn btn-danger" th:if="${#authorization.expression('hasRole(''ADMIN'')') or #authentication.principal.username == inquiry.email}">削除</a>
+</div>
+</body>
+</html>

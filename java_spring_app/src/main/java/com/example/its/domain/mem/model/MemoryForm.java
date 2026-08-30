@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class MemoryForm {
 	private int id;
 	private int userId;
+	private String act;
 	
 	@NotBlank(message = "必須項目です。")
 	@Size(max = 128)
@@ -37,5 +38,10 @@ public class MemoryForm {
 		details = entity.getDetails();
 		this.imageId = image.getId();
 		this.filename = image.getFilename();
+	}
+	public MemoryForm(EntityMemory entity) {
+		id = entity.getId();
+		title = entity.getTitle();
+		details = entity.getDetails();
 	}
 }

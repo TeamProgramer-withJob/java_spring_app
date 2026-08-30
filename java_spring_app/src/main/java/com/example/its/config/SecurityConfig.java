@@ -21,6 +21,7 @@ import javax.sql.DataSource;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+	/*
     @Bean
     public UserDetailsManager authenticateUserByDb(DataSource dataSource) {
         JdbcUserDetailsManager jdbcUserManager = new JdbcUserDetailsManager(dataSource);
@@ -30,6 +31,7 @@ public class SecurityConfig {
 
         return jdbcUserManager;
     }
+    */
 
     @Bean
 //    public SecurityFilterChain securityFilterChain(HttpSecurity http, WebAuthFailedHandler authFailedHandler) throws Exception {
@@ -50,11 +52,14 @@ public class SecurityConfig {
         	      .deleteCookies("web_service_its");
         });
 
-        String[] permittedUrls = {"/","/css/**", "/webjars/**","/h2-console/**","/signup/**","/contacts/**","/test/**","/error/**","/access/denied/**"};
+        String[] permittedUrls = {"/","/css/**", "/webjars/**","/h2-console/**","/signup/**","/inquiries/**","/test/**","/error/**","/access/denied/**"};
         http.authorizeHttpRequests( auth -> {
             auth.requestMatchers(permittedUrls).permitAll()
                 .requestMatchers("/memories/**").hasAnyRole("ADMIN", "USER")
-                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/admin/users/update/*").authenticated()
+//                .requestMatchers(HttpMethod.PUT, "/admin/users/update/**").authenticated()
+                .requestMatchers("/admin/users/delete/**").hasRole("ADMIN")
+                .requestMatchers("/admin/users/**").hasAnyRole("ADMIN", "USER")
                 .anyRequest().authenticated();
         })
         .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))

@@ -25,7 +25,7 @@ public class FileValidator implements ConstraintValidator<ValidateFile, Multipar
 
 	@Override
 	public boolean isValid(MultipartFile file, ConstraintValidatorContext context) {
-		if (file == null || file.isEmpty()) return false;
+		if (file == null || file.isEmpty()) return true;
 		
 		if (file.getSize() > maxFileSize && messages.length >= 1) {
 			context.disableDefaultConstraintViolation();

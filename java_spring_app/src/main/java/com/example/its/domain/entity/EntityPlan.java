@@ -15,46 +15,19 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
-@Table(name = "users")
+@Table(name = "plans")
 @ToString
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EntityUser {
+public class EntityPlan {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	//@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_generator")
-	//@SequenceGenerator(name="users_id_generator", sequenceName = "seq_users_id", initialValue = 1, allocationSize = 1)
-	//@Column(name = "id")
 	private int id;
 	
 	@Column(name = "name", nullable = false, length = 128)
 	private String name;
 
-	@Column(name = "password", nullable = false, length = 64)
-	private String password;
-
-	@Column(name = "email", nullable = false, length = 256, unique = true)
-	private String email;
-
-	@Column(name = "role", nullable = false, length = 8)
-	private String role = "USER";
-
-	@Column(name = "valid", nullable = false, columnDefinition="false")
-	private boolean valid = false;
-
-	@Column(name = "force_pwd_change", nullable = false, columnDefinition="true")
-	private boolean forcePwdChange = false;
-
-	@Column(name = "subscription_id", nullable = true, length = 36)
-	private String subscriptionId;
-
-	@Column(name = "plan_id", nullable = true)
-	private int planId;
-	
-	@Column(name = "icon", nullable = true)
-	private byte[] icon;
-	
 	@Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
 	private OffsetDateTime createdAt;
 	

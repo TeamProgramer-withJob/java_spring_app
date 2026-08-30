@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::body})}">
+<head>
+    <title>ユーザープロファイル | 課題管理アプリケーション</title>
+</head>
+<body>
+<h1 class="mt-3">プロファイル詳細</h1>
+<br>
+<div sec:authorize="hasRole('ADMIN')">
+  <a href="./user-list.html" th:href="@{/admin/users(page=${pageNo})}">一覧に戻る</a>
+  <br>
+  <br>
+</div>
+<div th:if="${error}" th:text="${error}">(error)</div>
+<div th:unless="${error}">
+<div th:object="${data}">
+  <p th:text="*{name}">(name)</p>
+  <p th:text="*{email}">(email)</p>
+  <div th:switch="*{role}">
+    <p th:case="'ADMIN'">Role： 管理者</p>
+    <p th:case="'USER'">Role： ユーザー</p>
+    <p th:case="*">ゲスト</p>
+  </div>
+  <div th:if="*{subscriptionId}">
+    <p>Subscription ID： <span th:text="*{subscriptionId}">(subscription id)</span></p>
+    <p>加入したプラン： <span th:text="${planName}">(plan name)</span></p>
+  </div>
+  <p th:unless="*{subscriptionId}">
+    <span>非会員</span>
+  </p>
+  <div>
+    <input type="radio" id="opt-valid" th:checked="*{valid}" disabled>
+    <label for="opt-valid">有効</label>
+  </div>
+  <div>
+    <input type="radio" id="opt-forcePwdChg" th:checked="*{forcePwdChange}" disabled>
+    <label for="opt-forcePwdChg">強制パスワード変更</label>
+  </div>
+  <br>
+  <p>Created at <span th:text="${#temporals.format(data.createdAt, 'yyyy/MM/dd HH:mm:ss', 'Asia/Tokyo')}">(createdAt)</span></p>
+</div>
+<br>
+<div>
+  <a th:href="@{/admin/users/edit/{id}(id=${data.id}, page=${pageNo})}" class="btn btn-warning">編集</a>
+  <!-- a th:href="@{/admin/users/block/{id}(id=${data.id}, page=${pageNo})}" class="btn btn-warning">無効にする</a -->
+  <a th:href="@{/admin/users/delete/{id}(id=${data.id}, page=${pageNo})}" class="btn btn-danger" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">削除</a>
+</div>
+</div>
+</body>
+</html>

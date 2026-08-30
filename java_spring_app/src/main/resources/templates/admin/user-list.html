@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::body})}">
+<head>
+    <title>ユーザー一覧 | 課題管理アプリケーション</title>
+</head>
+<body>
+<h1 class="mt-3">ユーザー一覧</h1>
+<br>
+<table class="table">
+  <thead>
+  <tr>
+    <th>氏名</th>
+    <th>電子メール</th>
+    <th>ロール</th>
+    <th>認証状態</th>
+    <th>加入プラン</th>
+    <th>登録日</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="user : ${page.getContent()}">
+    <td>
+      <a href="./user-detail" th:href="@{/admin/users/{id}(id=${user.id}, page=${page.number})}" th:text="${user.name}">(氏名)</a>
+    </td>
+    <td th:text="${user.email}">(電子メール)</td>
+    <td th:text="${user.role}">(ロール)</td>
+    <td th:text="${user.valid ? '承認済み' : '未承認'}">(認証状態)</td>
+    <td th:text="${user.planId == 0 ? '未加入' : user.planId}">(加入プラン)</td>
+    <td th:text="${#temporals.format(user.createdAt, 'yyyy/MM/dd HH:mm:ss', 'Asia/Tokyo')}">(登録日)</td>
+  </tr>
+  </tbody>
+</table>
+
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+    <li class="page-item" th:classappend="${page.first} ? 'disabled'">
+      <a class="page-link" th:unless="${page.first}" th:href="@{/admin/users(page=${page.number-1})}">previous</a>
+      <!--  span class="page-item" th:if="${page.first}">previous</span -->
+    </li>
+    
+    <li class="page-item" th:each="i : ${#numbers.sequence(idxStart, idxEnd)}" th:classappend="${page.number+1==i} ? 'active'">
+      <a class="page-link" th:href="@{/admin/users(page=${i-1})}" th:text="${i}">1</a>
+    </li>
+    
+    <li class="page-item" th:classappend="${page.last} ? 'disabled'">
+      <a class="page-link" th:unless="${page.last}" th:href="@{/admin/users(page=${page.number+1})}">next</a>
+      <!--  span th:if="${page.last}">next</span -->
+    </li>
+  </ul>
+</nav>
+
+</body>
+</html>

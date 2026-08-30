@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org" lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>アクセス権限がありません | 403 Forbidden</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://jsdelivr.net" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .error-card {
+            max-width: 500px;
+            width: 100%;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .error-icon {
+            font-size: 4rem;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container text-center">
+    <div class="card error-card mx-auto p-5">
+        <div class="card-body">
+            <!-- 警告アイコン（簡易的に文字ベースのシールドマーク） -->
+            <div class="error-icon mb-3">🛡️❌</div>
+            
+            <h1 class="display-5 fw-bold text-dark mb-2">403</h1>
+            <h2 class="h4 text-muted mb-4">アクセス権限がありません</h2>
+            
+            <p class="text-secondary mb-4">
+                お探しのページにアクセスする権限がありません。<br>
+                管理者アカウントでログインし直すか、トップページにお戻りください。
+            </p>
+
+            <!-- 開発環境用のデバッグ情報（本番環境では非表示にすることを推奨） -->
+            <div th:if="${error}" class="text-start bg-light p-3 rounded mb-4 style='font-size: 0.85rem;'">
+                <p class="mb-1 text-monospace"><strong>発生日時:</strong> <span th:text="${timestamp}"></span></p>
+                <p class="mb-0 text-monospace"><strong>メッセージ:</strong> <span th:text="${message}"></span></p>
+            </div>
+
+            <div class="d-grid gap-2">
+                <a th:href="@{/}" class="btn btn-primary btn-lg">トップページへ戻る</a>
+                <a th:href="@{/login}" class="btn btn-outline-secondary">ログイン画面へ</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://jsdelivr.net"></script>
+</body>
+</html>

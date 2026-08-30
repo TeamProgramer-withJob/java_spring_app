@@ -9,18 +9,34 @@
 <a href="./list.html" th:href="@{/memories}">一覧に戻る</a>
 <div>
   <h2 th:text="${memo.title}">(summary)</h2>
-  <p th:text="${memo.details}">(description)</p>
+  <pre th:text="${memo.details}">(description)</pre>
 </div>
+
 <div th:if="${#lists.size(memo.imgIds) > 0}" th:each="imgId : ${memo.imgIds}">
-  <img th:src="@{/memories/image/{imageId}(imageId=${imgId})}" width="320" alt="画像" />
+  <div style="position: relative; display: inline-block;">
+    <img th:src="@{/memories/image/{imageId}(imageId=${imgId})}" style="width: 320px; height: auto;" th:alt="|画像${imgId}|" />
+    <a th:href="@{/memories/image/delete/{id}(id=${imgId})}" style="position: absolute; top: 5px; right: 5px; z-index: 10;"
+              onclick="return confirm('画像を削除してもよろしいですか?');">
+      <button type="button" class="btn btn-danger">
+        <i class="bi bi-trash"></i>削除
+      </button>
+    </a>
+  </div>
 </div>
 <p th:text="|投稿日： ${#temporals.format(memo.createdAt, 'yyyy/MM/dd HH:mm:ss', 'Asia/Tokyo')} 最後更新日：${#temporals.format(memo.lastUpdated, 'yyyy/MM/dd HH:mm:ss', 'Asia/Tokyo')}|"></p>
 
-<form th:action="@{/memories/like/{memId}(memId=${memo.id})}" method="post">
-  <button type="submit" class="btn btn-outline-primary">
-    <i class="bi bi-hand-thumbs-up"></i>いいね！
-  </button>
-</form>
+<div style="display:flex; gap:20px;">
+  <form th:action="@{/memories/like/{memId}(memId=${memo.id})}" method="post">
+    <button type="submit" class="btn btn-outline-primary">
+      <i class="bi bi-hand-thumbs-up">いいね！</i>
+    </button>
+  </form>
+  <form th:action="@{/memories/image/{memId}/add(memId=${memo.id})}" method="get">
+    <button type="submit" class="btn btn-outline-primary">
+      <i class="bi bi-hand-thumbs-up">画像を追加</i>
+    </button>
+  </form>
+</div>
 <span th:if="${#lists.size(memo.thumbups) > 0}" th:text="| Total： ${#lists.size(memo.thumbups)} 件|">Total: 0</span>
 </body>
 </html>

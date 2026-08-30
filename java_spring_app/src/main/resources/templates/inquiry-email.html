@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::body})}">
+<head>
+    <title>認証 | 課題管理アプリケーション</title>
+</head>
+<body>
+<h1 class="mt-3" th:text="${error} ? ${message}">(message)</h1>
+<h1 class="mt-3" th:if="not ${error}">確認するため、問合せした時の電子メールを入力してください</h1>
+<a href="./list.html" th:href="@{/inquiries(page=${pageNo})}">一覧に戻る</a>
+
+	<form action="#" th:action="@{/inquiries/email/{id}(id=${inquiry.id}, page=${pageNo})}" method="post" th:object="${inquiry}">
+    <div class="mt-3 col-md-6">
+        <!--  label for="emailInput" class="form-label">電子メール</label -->
+        <input type="text" id="emailInput" name="email" th:field="*{email}" class="form-control"
+                    th:classappend="${#fields.hasErrors('email')} ? is-invalid" th:hidden="${error}">
+        <p class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">(error)</p>
+    </div>
+    <div class="mt-3" th:if="not ${error}">
+        <button type="submit" class="btn btn-primary">送信</button>
+    </div>
+</form>
+</body>
+</html>

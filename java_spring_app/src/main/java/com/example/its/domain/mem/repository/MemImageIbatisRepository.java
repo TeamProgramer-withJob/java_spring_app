@@ -1,5 +1,6 @@
 package com.example.its.domain.mem.repository;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -21,4 +22,7 @@ public interface MemImageIbatisRepository {
 
     @Select("select * from mem_images where id = #{id}")
     Optional<EntityMemImage> findById(@Param("id") int id);
+
+    @Delete("delete from mem_images where id = #{id}")
+    boolean delete(@Param("id") int id);
 }

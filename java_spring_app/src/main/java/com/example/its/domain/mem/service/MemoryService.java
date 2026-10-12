@@ -45,15 +45,7 @@ public class MemoryService {
 			
 			return form;
 		});
-//		for (EntityMemory entity : entities) {
-//			List<EntityMemImage> images = imageRepository.findByMemId(entity.getId());
-//			
-//			if (!images.isEmpty()) {
-//				list.add(new MemoryForm(entity, images.get(0)));
-//			} else {
-//				list.add(new MemoryForm(entity, new EntityMemImage()));
-//			}
-//		}
+
 		return list;
 	}
 	

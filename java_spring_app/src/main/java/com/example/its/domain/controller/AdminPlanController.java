@@ -2,8 +2,9 @@ package com.example.its.domain.controller;
 
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,25 +16,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.its.config.ItsUserDetails;
-import com.example.its.domain.entity.EntityUser;
-import com.example.its.domain.model.UserEditForm;
-import com.example.its.domain.service.UserService;
+import com.example.its.domain.entity.EntityPlan;
+import com.example.its.domain.model.PlanForm;
+import com.example.its.domain.service.PlanService;
 
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("admin/plans")
 @RequiredArgsConstructor
 public class AdminPlanController {
-	private final UserService userService;
+	private final PlanService planService;
 	
-    @GetMapping
-    public String listUsers(Pageable pageable, Model model) {
-    	Page<EntityUser> pageObj = userService.findAll(pageable);
+    @GetMapping()
+    public String listPlans(Pageable pageable, Model model) {
+    	// set sort by id asc
+    	pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "id"));
+    	Page<EntityPlan> pageObj = planService.findAll(pageable);
     	model.addAttribute("page", pageObj);
     	
     	int idxStart = Math.max(1, pageObj.getNumber());
@@ -42,62 +42,81 @@ public class AdminPlanController {
     	model.addAttribute("idxStart", idxStart);
     	model.addAttribute("idxEnd", idxEnd);
 
-    	return "admin/user-list";
+    	return "admin/plan-list";
     }
+
     @GetMapping("/{id}")
-    public String showUserProfile(@AuthenticationPrincipal ItsUserDetails user, @RequestParam(name="page", defaultValue="0") int page, Model model, RedirectAttributes attr) {
-    	EntityUser entity = null;
-
-    	if (user == null) {
-    		attr.addFlashAttribute("message", "先にログインしてください。");
-        	return "redirect:/login?error";
+    public String showPlanDetail(@PathVariable("id") int id, @RequestParam("page") int page, PlanForm plan, Model model) {
+    	model.addAttribute("pageNo", page);
+    	
+    	PlanForm form = planService.findById(id);
+    	if (form.getId() > 0) {
+        	model.addAttribute("plan", form);
+            return "plan-detail";
     	} else {
-    		model.addAttribute("pageNo", page);
-    		String email = user.getUsername();
-
-    		entity = userService.findUser(email);
-    		if (!user.isAdmin() && !user.getUsername().equals(entity.getEmail())) {
-    			// not allowed
-    		}
-    		
-    		entity.setPlanId(2);
-    		model.addAttribute("user", entity);
-    		model.addAttribute("planName", "プランB");
+            return "redirect:/admin/plans";
     	}
+    }
 
-    	return "admin/user-detail";
+    @GetMapping("/new")
+    public String showPostPlan(@ModelAttribute("plan") PlanForm form, Model model) {
+		model.addAttribute("isEdit", false);
+    	
+        return "admin/plan-form";
+    }
+    
+    @PostMapping()
+    public String createPlan(@Validated @ModelAttribute("plan") PlanForm form, BindingResult result, Model model) {
+    	if (result.hasErrors()) {
+    		return showPostPlan(form, model);
+    	}
+    	
+    	planService.registerPlan(form);
+    	
+        return "redirect:/admin/plans";
     }
 
     @GetMapping("/edit/{id}")
-    public String showEditUserForm(@PathVariable("id") int id, @ModelAttribute("data") UserEditForm form, Model model) {
-    	if (form.getEmail() == null || form.getEmail().length() == 0) {
-        	EntityUser user = userService.findUserById(id);
-    		if (user.getId() > 0) {
-    			model.addAttribute("data", new UserEditForm(user));
-    		} else {
-    			// specified user not found.
-    		}
-    	}
+    public String showEditGenre(@PathVariable("id") int id, @RequestParam("page") int page, Model model) {
+		model.addAttribute("isEdit", true);
+		model.addAttribute("page", page);
     	
-    	return "admin/user-edit";
-    }
-    @PutMapping("/edit")
-    public String updateUser(@Validated @ModelAttribute("data") UserEditForm form, BindingResult result, Model model) {
-    	if (result.hasErrors()) {
-    		return showEditUserForm(form.getId(), form, model);
-    	}
-    	
-    	return "admin/user-detail";
+		model.addAttribute("plan", planService.findById(id));
+
+		return "admin/plan-form";
     }
     
-///*    @PostMapping("/logout")
-//    public String userLogout() {
-//    	return "redirect:/login?logout";
-//    }*/
-//    
-//    @GetMapping("/access/denied")
-//    public String showAccessDeniedPage() {
-//
-//        return "access-denied";
-//    }
+    @PutMapping("/edit/{id}")
+    public String updateGenre(@PathVariable("id") int id, @RequestParam("page") int page, @Validated @ModelAttribute("plan") PlanForm form, BindingResult result, Model model) {
+		model.addAttribute("isEdit", true);
+		model.addAttribute("page", page);
+
+		if (result.hasErrors()) {
+			model.addAttribute("plan", form);
+
+			return "admin/plan-form";
+    	} else {
+    		PlanForm tForm = planService.findById(id);
+    		if (tForm.getId() > 0) {
+    			form.setCreatedAt(tForm.getCreatedAt());
+            	planService.updatePlan(form);
+            	
+                return "redirect:/admin/plans?page=" + page;
+    		} else {
+    			model.addAttribute("error", "料金プランは見つかりません。");
+    			model.addAttribute("plan", form);
+
+    			return "admin/plan-form";
+    		}
+    	}
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deletePlan(@PathVariable("id") int id, @RequestParam("page") int page, Model model) {
+    	PlanForm form = planService.findById(id);
+    	if (form.getId() > 0) {
+    		planService.deletePlan(id);
+    	}
+		return "redirect:/admin/plans?page=" + page;
+    }
 }

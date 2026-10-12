@@ -9,12 +9,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 
-import javax.sql.DataSource;
+import com.example.its.ItsAccessDeniedHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -35,12 +33,13 @@ public class SecurityConfig {
 
     @Bean
 //    public SecurityFilterChain securityFilterChain(HttpSecurity http, WebAuthFailedHandler authFailedHandler) throws Exception {
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, ItsSuccessHandler authSuccessHandler, ItsAccessDeniedHandler accessDeniedHandler) throws Exception {
         http.formLogin(login -> {
             login.loginPage("/login")
                  .loginProcessingUrl("/authenticateTheUser")
+                 .successHandler(authSuccessHandler)
 //                 .failureHandler(new WebAuthFailedHandler())
-                 .defaultSuccessUrl("/memories")
+//                 .defaultSuccessUrl("/memories")
                  .permitAll();
         });
         
@@ -52,21 +51,21 @@ public class SecurityConfig {
         	      .deleteCookies("web_service_its");
         });
 
-        String[] permittedUrls = {"/","/css/**", "/webjars/**","/h2-console/**","/signup/**","/inquiries/**","/test/**","/error/**","/access/denied/**"};
+        String[] permittedUrls = {"/", "/news/**", "/css/**", "/images/**", "/webjars/**","/h2-console/**","/signup/**","/news/**", "/inquiries/**","/test/**","/error/**","/access/denied/**"};
         http.authorizeHttpRequests( auth -> {
             auth.requestMatchers(permittedUrls).permitAll()
                 .requestMatchers("/memories/**").hasAnyRole("ADMIN", "USER")
                 .requestMatchers(HttpMethod.PUT, "/admin/users/update/*").authenticated()
-//                .requestMatchers(HttpMethod.PUT, "/admin/users/update/**").authenticated()
                 .requestMatchers("/admin/users/delete/**").hasRole("ADMIN")
                 .requestMatchers("/admin/users/**").hasAnyRole("ADMIN", "USER")
+                .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
         })
         .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
         .csrf(csrf -> csrf
                 .ignoringRequestMatchers("/h2-console/**")
         )
-        .exceptionHandling(ex -> ex.accessDeniedPage("/access/denied"));
+        .exceptionHandling(ex -> ex.accessDeniedHandler(accessDeniedHandler));
 
         
         http.logout(LogoutConfigurer::permitAll);

@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.example.its.domain.entity.EntityUser;
 
 public class ItsUserDetails implements UserDetails {
+	private static final long serialVersionUID = 1L;
 	private final EntityUser user;
 
 	public ItsUserDetails(EntityUser user) {
@@ -25,6 +26,9 @@ public class ItsUserDetails implements UserDetails {
 	}
 	public boolean isAdmin() {
 		return user.getRole().equals("ADMIN");
+	}
+	public boolean isForcePwdChange() {
+		return user.isForcePwdChange();
 	}
 
 	@Override
@@ -52,5 +56,5 @@ public class ItsUserDetails implements UserDetails {
     public boolean isCredentialsNonExpired() { return true; }
 
     @Override
-    public boolean isEnabled() { return true; }
+    public boolean isEnabled() { return user.isValid(); }
 }

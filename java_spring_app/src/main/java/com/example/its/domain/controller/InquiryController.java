@@ -37,6 +37,7 @@ public class InquiryController {
 	
     @GetMapping()
     public String listInquiries(Pageable pageable, Model model) {
+    	model.addAttribute("activeMenu", "inquiries");
     	Page<EntityInquiry> pageObj = inquiryService.findAll(pageable);
     	model.addAttribute("page", pageObj);
     	
@@ -97,15 +98,17 @@ public class InquiryController {
     @PostMapping("/email/{id}")
     public String verifyInquiryEmail(@PathVariable("id") int id, @RequestParam("page") int page, @ModelAttribute("inquiry") InquiryForm form, BindingResult result, Model model) {
     	InquiryForm inquiry = inquiryService.findById(id);
+    	model.addAttribute("inquiry", inquiry);
+    	model.addAttribute("pageNo", page);
+
     	if (inquiry.getId() > 0 && inquiry.getEmail().equalsIgnoreCase(form.getEmail())) {
-        	model.addAttribute("pageNo", page);
-        	model.addAttribute("inquiry", inquiry);
             return "inquiry-detail";
     	} else {
     		// inquiry not found or not allowed
+        	model.addAttribute("error", true);
+    		model.addAttribute("message", "アクセス権はありません。");
+            return "inquiry-email";
     	}
-    	
-        return "redirect:/inquiries";
     }
     @GetMapping("/edit/{id}")
     public String showEditInquiry(@AuthenticationPrincipal ItsUserDetails user, @PathVariable("id") int id, @RequestParam("page") int page, Model model) {

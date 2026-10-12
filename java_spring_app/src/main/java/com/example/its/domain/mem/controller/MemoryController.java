@@ -8,6 +8,7 @@ import com.example.its.domain.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/memories")
@@ -31,8 +31,8 @@ public class MemoryController {
 	private final UserService userService;
     
     @GetMapping
-    public String showList(@RequestParam(name="page", defaultValue = "0") int page, @RequestParam(name="size", defaultValue = "2") int size, Model model) {
-    	Page<MemoryForm> pageObj = memoService.findAll(page, size);
+    public String showList(Pageable pageable, Model model) {
+    	Page<MemoryForm> pageObj = memoService.findAll(pageable.getPageNumber(), pageable.getPageSize());
     	model.addAttribute("page", pageObj);
 
     	int idxStart = Math.max(1, pageObj.getNumber());

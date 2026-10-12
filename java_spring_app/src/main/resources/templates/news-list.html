@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::body})}">
+<head>
+    <title>トップニュース</title>
+</head>
+<body>
+<div id="autoScrollPosition" th:unless="${autoScroll}"></div>
+<div class="container-fluid p-0">
+  <img src="/images/its_news_banner.jpg" class="img-fluid w-100" alt="main banner">
+</div>
+
+<div id="autoScrollPosition" th:if="${autoScroll}"></div>
+<div class="container my-5">
+    <h2 class="mb-4">最新ニュース</h2>
+
+    <div class="list-group list-group-flush">
+        <article th:each="news : ${page.getContent()}" class="list-group-item py-4">
+            <small class="text-muted" th:text="${#temporals.format(news.createdAt, 'yyyy/MM/dd HH:mm', 'Asia/Tokyo')}">(title)</small>
+            <h5 class="mt-2 mb-2" th:if="${#strings.length(news.information) > 128}">
+                <a th:href="@{/news/{id}(id=${news.id})}" class="text-decoration-none text-dark"
+                   th:text="${news.title}"></a>
+            </h5>
+            <h5 class="mt-2 mb-2" th:unless="${#strings.length(news.information) > 128}">
+                <span class="text-decoration-none text-dark" th:text="${news.title}"></span>
+            </h5>
+            <p class="mb-0 text-secondary" th:text="${#strings.length(news.information) > 128 ? #strings.substring(news.information, 0, 128)+'...' : news.information}"></p>
+        </article>
+    </div>
+
+    <div class="text-end mt-3" th:unless="${showAll}">
+        <a th:href="@{/news?all&auto}" class="btn btn-outline-primary">View All News</a>
+    </div>
+</div>
+
+<nav aria-label="Page navigation" th:if="${showAll}">
+  <ul class="pagination justify-content-end gap-1">
+    <li class="page-item">
+      <a class="page-link" th:href="@{/news(page=0, all, auto)}" aria-label="First"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+    
+    <li class="page-item" th:each="i : ${#numbers.sequence(idxStart, idxEnd)}" th:classappend="${page.number+1==i} ? 'active'">
+      <a class="page-link rounded" th:href="@{/news(page=${i-1}, all, auto)}" th:text="${i}">1</a>
+    </li>
+    
+    <li class="page-item">
+      <a class="page-link" th:href="@{/news(page=${page.totalPages-1}, all, auto)}" aria-label="Last"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+  </ul>
+</nav>
+
+<div class="d-flex" style="margin-bottom:30px;" th:if="${#authorization.expression('isAuthenticated()') and #authorization.expression('hasRole(''ADMIN'')')}">
+	<label class="ms-auto">新しいニュースを<span><a th:href="@{/admin/news}">投稿</a></span>します。</label>
+</div>
+
+<script>
+	window.addEventListener('load', function() {
+		document.getElementById('autoScrollPosition').scrollIntoView({behavior: 'instant'});
+	});
+</script>
+</body>
+</html>

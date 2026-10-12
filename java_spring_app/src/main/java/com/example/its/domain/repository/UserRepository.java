@@ -35,7 +35,7 @@ public interface UserRepository {
     @Insert("update users set name=#{name} where id=#{id}")
     void updateUserName(@Param("id") int id, @Param("name") String name);
 
-    @Insert("update users set password=#{pwd} where id=#{id}")
+    @Insert("update users set password=#{pwd}, force_pwd_change=false, last_updated=current_timestamp where id=#{id}")
     void updatePwd(@Param("id") int id, @Param("pwd") String pwd);
 
     @Delete("delete from users where id=#{id}")

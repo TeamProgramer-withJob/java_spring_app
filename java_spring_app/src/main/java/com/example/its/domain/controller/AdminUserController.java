@@ -3,7 +3,6 @@ package com.example.its.domain.controller;
 
 import java.util.List;
 
-import org.postgresql.util.PSQLException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,7 +15,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,7 +26,6 @@ import com.example.its.domain.model.PulldownIdName;
 import com.example.its.domain.model.UserEditForm;
 import com.example.its.domain.service.UserService;
 
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -43,7 +40,11 @@ public class AdminUserController {
     	model.addAttribute("page", pageObj);
     	
     	int idxStart = Math.max(1, pageObj.getNumber());
-    	int idxEnd = Math.min(pageObj.getTotalPages(), idxStart + pageable.getPageSize());
+    	int idxEnd = idxStart + pageable.getPageSize();
+    	if (idxEnd > pageObj.getTotalPages()) {
+    		idxEnd = pageObj.getTotalPages();
+    		idxStart = Math.max(1, idxEnd - pageable.getPageSize());
+    	}
 
     	model.addAttribute("idxStart", idxStart);
     	model.addAttribute("idxEnd", idxEnd);

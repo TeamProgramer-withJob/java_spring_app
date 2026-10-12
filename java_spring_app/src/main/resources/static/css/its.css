@@ -1,0 +1,32 @@
+.page-title {
+	margin-top: 30px;
+	font-weight: bold;
+	font-size: 20px;
+	text-decoration-line: underline;
+}
+
+.page-top-link {
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+.page-bottom-btn {
+	margin-top: 30px;	
+	margin-left: 15px;	
+}
+
+.span-disp-label {
+	margin-left: 15px;
+    background-color: #dddddd;
+    padding: 8px;
+    border-radius: 10px;
+}
+
+.span-disp-radio {
+	margin-left: 10px;
+}
+
+.myerror {
+    font-style: italic;
+    color: red;
+}

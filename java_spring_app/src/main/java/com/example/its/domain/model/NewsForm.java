@@ -18,7 +18,7 @@ public class NewsForm {
 	@Size(max = 128)
 	private String title;
 	
-	@Size(max = 1024)
+	@Size(max = 2048)
 	private String information;
 
 	private int genreId;

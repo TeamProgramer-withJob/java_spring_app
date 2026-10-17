@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS its.news
 (
     id integer NOT NULL GENERATED ALWAYS AS IDENTITY,
     title character varying(128) COLLATE pg_catalog."default" NOT NULL,
-    information character varying(1024) COLLATE pg_catalog."default" NOT NULL,
+    information character varying(2048) COLLATE pg_catalog."default" NOT NULL,
     genre_id integer NOT NULL,
     user_id integer NOT NULL,
     valid_till timestamp(3) with time zone,

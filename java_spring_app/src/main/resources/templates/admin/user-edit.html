@@ -56,9 +56,12 @@
     <div class="mt-3 col-md-4">
       <p>Created at <span th:text="${#temporals.format(data.createdAt, 'yyyy/MM/dd HH:mm:ss', 'Asia/Tokyo')}">(createdAt)</span></p>
     </div>
-    <div class="mt-3 page-bottom-btn">
-        <button type="submit" class="btn btn-primary">更新</button>
-    </div>
+
+	<div class="page-bottom-btn">
+  	  <a th:href="@{/admin/users/{id}(id=${data.id}, page=${pageNo})}" class="btn btn-secondary">戻る</a>
+      <span style="margin-right: 15px;"></span>
+      <button type="submit" class="btn btn-primary">更新</button>
+	</div>
   </form>
 </div>
 </body>

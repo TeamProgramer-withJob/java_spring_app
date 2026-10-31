@@ -33,6 +33,12 @@
         </select>
         <p class="invalid-feedback" th:if="${#fields.hasErrors('genreId')}" th:errors="*{genreId}">(error)</p>
     </div>
+    <div class="mt-3 col-md-6">
+        <label for="validTillInput" class="form-label">表示期限</label>
+        <input type="date" id="validTillInput" name="validTill" class="form-control" required style="width:180px"
+               th:value="${#temporals.format(news.validTill, 'yyyy-MM-dd')}" th:classappend="${#fields.hasErrors('validTill')} ? is-invalid">
+        <p class="invalid-feedback" th:if="${#fields.hasErrors('validTill')}" th:errors="*{validTill}">(error)</p>
+    </div>
 
     <div class="mt-3 col-md-6" th:if="${isEdit}">
       <p>Created at <span th:text="${#temporals.format(news.createdAt, 'yyyy/MM/dd HH:mm:ss', 'Asia/Tokyo')}">(createdAt)</span></p>

@@ -2,12 +2,20 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{fragments/layout :: layout(~{::title}, ~{::body})}">
 <head>
-    <title>認証 | 課題管理アプリケーション</title>
+    <title>電子メール確認</title>
 </head>
 <body>
-<h1 class="mt-3" th:text="${error} ? ${message}">(message)</h1>
-<h1 class="mt-3" th:if="not ${error}">確認するため、問合せした時の電子メールを入力してください</h1>
-<a href="./list.html" th:href="@{/inquiries(page=${pageNo})}">一覧に戻る</a>
+<label class="page-title">確認するため、問合せした時の電子メールを入力してください</label>
+<div class="page-top-link">
+  <a href="./list.html" th:href="@{/inquiries(page=${pageNo})}">一覧に戻る</a>
+</div>
+
+<div class="error-message" th:if="${error}">
+  <p th:text="${message}">
+</div>
+
+
+
 
 	<form action="#" th:action="@{/inquiries/email/{id}(id=${inquiry.id}, page=${pageNo})}" method="post" th:object="${inquiry}">
     <div class="mt-3 col-md-6">

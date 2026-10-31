@@ -6,13 +6,27 @@
 }
 
 .page-top-link {
-	margin-top: 30px;
+	margin-top: 20px;
 	margin-bottom: 30px;
 }
 
 .page-bottom-btn {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
 	margin-top: 30px;	
-	margin-left: 15px;	
+	margin-left: 15px;
+	margin-bottom: 30px;
+}
+
+.page-top-btn {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	flex-wrap: nowrap;
+	margin-top: 15px;	
+	margin-right: 15px;
+	margin-bottom: 0px;
 }
 
 .span-disp-label {
@@ -26,7 +40,7 @@
 	margin-left: 10px;
 }
 
-.myerror {
+.error-message {
     font-style: italic;
     color: red;
 }

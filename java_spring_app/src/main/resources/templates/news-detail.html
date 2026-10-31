@@ -1,0 +1,11 @@
+<div class="modal-header">
+	<h5 class="modal-title" th:text="${news.title}">(title)</h5>
+</div>
+<div class="modal-body">
+    <span class="fw-bold" th:text="${genre}"></span>
+    <span th:text="${#temporals.format(news.createdAt, 'yyyy/MM/dd HH:mm:ss', 'Asia/Tokyo')}"></span>
+	<p th:text="${news.information}">(information)</p>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+</div>

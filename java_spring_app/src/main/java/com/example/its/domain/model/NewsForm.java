@@ -1,5 +1,6 @@
 package com.example.its.domain.model;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
 import com.example.its.domain.entity.EntityNews;
@@ -23,7 +24,7 @@ public class NewsForm {
 
 	private int genreId;
 	private int userId;
-	private OffsetDateTime validTill;
+	private LocalDate validTill;
 	private OffsetDateTime createdAt;
 
 	public NewsForm(EntityNews entity) {
@@ -32,7 +33,8 @@ public class NewsForm {
 		information = entity.getInformation();
 		genreId = entity.getGenreId();
 		userId = entity.getUserId();
-		validTill = entity.getValidTill();
+		OffsetDateTime tValidTill = entity.getValidTill();
+		validTill = tValidTill == null ? null: tValidTill.toLocalDate();
 		createdAt = entity.getCreatedAt();
 	}
 }

@@ -18,20 +18,20 @@
         <ul class="list-group list-group-flush">
             <li class="list-group-item py-3">
                 <div class="row">
-                    <div class="col-sm-4 text-secondary">氏名</div>
-                    <div class="col-sm-8" th:text="*{name}">（氏名）</div>
+                    <div class="col-sm-2 text-secondary">氏名</div>
+                    <div class="col-sm-10" th:text="*{name}">（氏名）</div>
                 </div>
             </li>
             <li class="list-group-item py-3">
                 <div class="row">
-                    <div class="col-sm-4 text-secondary">電子メール</div>
-                    <div class="col-sm-8" th:text="*{email}">（電子メール）</div>
+                    <div class="col-sm-2 text-secondary">電子メール</div>
+                    <div class="col-sm-10" th:text="*{email}">（電子メール）</div>
                 </div>
             </li>
             <li class="list-group-item py-3">
                 <div class="row">
-                    <div class="col-sm-4 text-secondary">ロール</div>
-                    <div class="col-sm-8" th:switch="*{role}">
+                    <div class="col-sm-2 text-secondary">ロール</div>
+                    <div class="col-sm-10" th:switch="*{role}">
                       <span th:case="'ADMIN'">管理者</span>
                       <span th:case="'USER'">一般利用者</span>
                     </div>
@@ -39,8 +39,8 @@
             </li>
             <li class="list-group-item py-3" th:if="*{subscriptionId}">
                 <div class="row">
-                    <div class="col-sm-4 text-secondary">契約情報</div>
-                    <div class="col col-sm-8 text-secondary">
+                    <div class="col-sm-2 text-secondary">契約情報</div>
+                    <div class="col col-sm-10 text-secondary">
                       <div>契約番号： <span th:text="*{subscriptionId}">(subscription id)</span></div>
                       <div>加入したプラン： <span th:text="*{spanName}">(plan name)</span></div>
                     </div>
@@ -48,14 +48,14 @@
             </li>
             <li class="list-group-item py-3" th:unless="*{subscriptionId}">
                 <div class="row">
-                    <div class="col-sm-4 text-secondary">契約情報</div>
-                    <div class="col-sm-8 text-secondary">非会員</div>
+                    <div class="col-sm-2 text-secondary">契約情報</div>
+                    <div class="col-sm-10 text-secondary">非会員</div>
                 </div>
             </li>
             <li class="list-group-item py-3">
                 <div class="row">
-                    <div class="col-sm-4 text-secondary">状態</div>
-                    <div class="col-sm-8 text-secondary">
+                    <div class="col-sm-2 text-secondary">状態</div>
+                    <div class="col-sm-10 text-secondary">
                       <input type="checkbox" id="opt-valid" th:checked="*{valid}" disabled>
                       <label for="opt-valid" class="text-secondary">有効</label>
                     </div>
@@ -63,16 +63,16 @@
             </li>
             <li class="list-group-item py-3">
                 <div class="row">
-                    <div class="col-sm-4 text-secondary">強制パスワード変更</div>
-                    <div class="col-sm-4 text-secondary">
+                    <div class="col-sm-2 text-secondary">強制パスワード変更</div>
+                    <div class="col-sm-10 text-secondary">
                       <input type="checkbox" id="opt-forcePwdChg" th:checked="*{forcePwdChange}" disabled>
                     </div>
                 </div>
             </li>
             <li class="list-group-item py-3">
                 <div class="row">
-                    <div class="col-sm-4 text-secondary">登録日時</div>
-                    <div class="col-sm-4 text-secondary"><span th:text="${#temporals.format(data.createdAt, 'yyyy/MM/dd HH:mm:ss', 'Asia/Tokyo')}">(createdAt)</span></div>
+                    <div class="col-sm-2 text-secondary">登録日時</div>
+                    <div class="col-sm-10 text-secondary"><span th:text="${#temporals.format(data.createdAt, 'yyyy/MM/dd HH:mm:ss', 'Asia/Tokyo')}">(createdAt)</span></div>
                 </div>
             </li>
         </ul>

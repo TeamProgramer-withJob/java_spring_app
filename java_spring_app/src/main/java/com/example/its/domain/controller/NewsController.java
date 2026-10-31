@@ -2,7 +2,6 @@ package com.example.its.domain.controller;
 
 
 import java.time.OffsetDateTime;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.its.config.ItsUserDetails;
 import com.example.its.domain.entity.EntityUser;
+import com.example.its.domain.model.GenreForm;
 import com.example.its.domain.model.NewsForm;
 import com.example.its.domain.model.PulldownIdName;
 import com.example.its.domain.service.GenreService;
@@ -37,7 +37,25 @@ public class NewsController {
 	private final GenreService genreService;
 	
     @GetMapping("/news")
-    public String listNews(Pageable pageable, @RequestParam(name="all", required = false) String fetchAll, @RequestParam(name="auto", required = false) String autoScroll, Model model) {
+    public String showNewsHome(Model model) {
+    	model.addAttribute("activeMenu", "news");
+
+    	return "news-home";
+    }
+
+    @GetMapping("/news/detail/{id}")
+    public String showNewsInformation(@PathVariable("id") int id, Model model) {
+    	NewsForm form = newsService.findById(id);
+    	model.addAttribute("news", form);
+
+    	GenreForm genre = genreService.findById(form.getGenreId());
+    	model.addAttribute("genre", "【" + genre.getTitle() + "】");
+
+    	return "news-detail";
+    }
+
+    @GetMapping("/news/list")
+    public String listNews(Pageable pageable, @RequestParam(name="all", required = false) String fetchAll, Model model) {
     	model.addAttribute("activeMenu", "news");
     	int size = pageable.getPageSize();
 
@@ -46,7 +64,6 @@ public class NewsController {
     	
     	boolean showAll = fetchAll != null && pageObj.getTotalElements() > size;
     	model.addAttribute("showAll", showAll);
-    	model.addAttribute("autoScroll", showAll && autoScroll != null);
 
     	int idxStart = Math.max(1, pageObj.getNumber());
     	int idxEnd = idxStart + pageable.getPageSize();
@@ -57,20 +74,7 @@ public class NewsController {
     	model.addAttribute("idxStart", idxStart);
     	model.addAttribute("idxEnd", idxEnd);
 
-    	return "news-list";
-    }
-
-    @GetMapping("/news/{id}")
-    public String showNewsInformation(@AuthenticationPrincipal ItsUserDetails user, @PathVariable("id") int id, @RequestParam("page") int page, Model model) {
-    	model.addAttribute("page", page);
-    	
-    	NewsForm form = newsService.findById(id);
-    	if (form.getId() > 0) {
-        	model.addAttribute("news", form);
-            return "news-detail";
-    	} else {
-            return "redirect:/news";
-    	}
+    	return "news-list::newsList";
     }
 
     @GetMapping("/admin/news")
@@ -81,6 +85,7 @@ public class NewsController {
     		EntityUser userE = userService.findUser(user.getUsername());
     		form.setUserId(userE.getId());
     	}
+		if (form.getValidTill() == null) form.setValidTill(OffsetDateTime.now().plusDays(90).toLocalDate());
     	model.addAttribute("news", form);
 
     	List<PulldownIdName> genres = genreService.findAll();
@@ -96,12 +101,12 @@ public class NewsController {
     	}
     	form.setUserId(user.getId());
     	if (form.getValidTill() == null) {
-    		form.setValidTill(OffsetDateTime.now());
+    		form.setValidTill(OffsetDateTime.now().plusDays(90).toLocalDate());
     	}
     	form.setCreatedAt(OffsetDateTime.now());
     	newsService.registerNews(form);
     	
-        return "redirect:/news";
+        return "redirect:/news?all&auto";
     }
 
     @GetMapping("/admin/news/edit/{id}")

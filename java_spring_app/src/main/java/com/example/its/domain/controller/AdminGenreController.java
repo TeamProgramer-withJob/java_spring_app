@@ -36,7 +36,11 @@ public class AdminGenreController {
     	model.addAttribute("page", pageObj);
     	
     	int idxStart = Math.max(1, pageObj.getNumber());
-    	int idxEnd = Math.min(pageObj.getTotalPages(), idxStart + pageable.getPageSize());
+    	int idxEnd = idxStart + pageable.getPageSize();
+    	if (idxEnd > pageObj.getTotalPages()) {
+    		idxEnd = pageObj.getTotalPages();
+    		idxStart = Math.max(1, idxEnd - pageable.getPageSize());
+    	}
 
     	model.addAttribute("idxStart", idxStart);
     	model.addAttribute("idxEnd", idxEnd);

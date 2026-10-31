@@ -1,5 +1,6 @@
 package com.example.its.domain.service;
 
+import java.time.OffsetDateTime;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -23,7 +24,7 @@ public class NewsService {
 	public Page<NewsForm> findAll(int page, int size) {
 		Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
 		
-		Page<EntityNews> entities = newsRepository.findAll(pageable);
+		Page<EntityNews> entities = newsRepository.findValidNews(pageable, OffsetDateTime.now());
 		Page<NewsForm> forms = entities.map(entity -> {
 			return new NewsForm(entity);
 		});

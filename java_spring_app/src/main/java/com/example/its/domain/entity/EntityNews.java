@@ -1,6 +1,7 @@
 package com.example.its.domain.entity;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 
 import com.example.its.domain.model.NewsForm;
 
@@ -50,7 +51,7 @@ public class EntityNews {
 		information = form.getInformation();
 		genreId = form.getGenreId();
 		userId = form.getUserId();
-		validTill = form.getValidTill();
+		validTill = form.getValidTill().atStartOfDay(ZoneId.of("Asia/Tokyo")).toOffsetDateTime();
 		createdAt = form.getCreatedAt();
 	}
 

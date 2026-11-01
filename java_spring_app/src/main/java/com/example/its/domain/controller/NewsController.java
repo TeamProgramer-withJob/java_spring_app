@@ -19,13 +19,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.its.config.ItsUserDetails;
-import com.example.its.domain.entity.EntityUser;
 import com.example.its.domain.model.GenreForm;
 import com.example.its.domain.model.NewsForm;
 import com.example.its.domain.model.PulldownIdName;
 import com.example.its.domain.service.GenreService;
 import com.example.its.domain.service.NewsService;
-import com.example.its.domain.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,12 +31,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NewsController {
 	private final NewsService newsService;
-	private final UserService userService;
 	private final GenreService genreService;
 	
     @GetMapping("/news")
-    public String showNewsHome(Model model) {
+    public String showNewsHome(@RequestParam(name="page", defaultValue = "0") int page, @RequestParam(name="all", defaultValue = "false") Boolean fetchAll, @RequestParam(name="auto", defaultValue = "false") Boolean autoScroll, Model model) {
     	model.addAttribute("activeMenu", "news");
+    	model.addAttribute("pageNo", page);
+    	model.addAttribute("all", fetchAll);
+    	model.addAttribute("auto", autoScroll);
 
     	return "news-home";
     }
@@ -55,15 +55,17 @@ public class NewsController {
     }
 
     @GetMapping("/news/list")
-    public String listNews(Pageable pageable, @RequestParam(name="all", required = false) String fetchAll, Model model) {
+    public String listNews(Pageable pageable, @RequestParam(name="all", defaultValue = "false") Boolean fetchAll, @RequestParam(name="auto", defaultValue = "false") Boolean autoScroll, Model model) {
     	model.addAttribute("activeMenu", "news");
     	int size = pageable.getPageSize();
 
     	Page<NewsForm> pageObj = newsService.findAll(pageable.getPageNumber(), size);
     	model.addAttribute("page", pageObj);
+    	model.addAttribute("pageNo", pageable.getPageNumber());
     	
-    	boolean showAll = fetchAll != null && pageObj.getTotalElements() > size;
+    	boolean showAll = fetchAll && pageObj.getTotalElements() > size;
     	model.addAttribute("showAll", showAll);
+    	model.addAttribute("auto", autoScroll);
 
     	int idxStart = Math.max(1, pageObj.getNumber());
     	int idxEnd = idxStart + pageable.getPageSize();
@@ -78,13 +80,9 @@ public class NewsController {
     }
 
     @GetMapping("/admin/news")
-    public String showPostNews(@AuthenticationPrincipal ItsUserDetails user, @ModelAttribute("news") NewsForm form, Model model) {
+    public String showPostNews(@ModelAttribute("news") NewsForm form, Model model) {
 		model.addAttribute("isEdit", false);
 
-		if (user != null) {
-    		EntityUser userE = userService.findUser(user.getUsername());
-    		form.setUserId(userE.getId());
-    	}
 		if (form.getValidTill() == null) form.setValidTill(OffsetDateTime.now().plusDays(90).toLocalDate());
     	model.addAttribute("news", form);
 
@@ -97,39 +95,42 @@ public class NewsController {
     @PostMapping("/admin/news")
     public String postNewNews(@AuthenticationPrincipal ItsUserDetails user, @Validated @ModelAttribute("news") NewsForm form, BindingResult result, Model model) {
     	if (result.hasErrors()) {
-    		return showPostNews(null, form, model);
+    		return showPostNews(form, model);
     	}
     	form.setUserId(user.getId());
-    	if (form.getValidTill() == null) {
-    		form.setValidTill(OffsetDateTime.now().plusDays(90).toLocalDate());
-    	}
     	form.setCreatedAt(OffsetDateTime.now());
     	newsService.registerNews(form);
     	
-        return "redirect:/news?all&auto";
+        return "redirect:/news?all=true&auto=true";
     }
 
     @GetMapping("/admin/news/edit/{id}")
-    public String showEditNews(@AuthenticationPrincipal ItsUserDetails user, @ModelAttribute("news") NewsForm form, Model model) {
-		model.addAttribute("isEdit", false);
+    public String showEditNews(@RequestParam(name="page") int page, @RequestParam(name="all") Boolean fetchAll, @ModelAttribute("news") NewsForm form, Model model) {
+		model.addAttribute("isEdit", true);
+		model.addAttribute("all", fetchAll);
+		model.addAttribute("page", page);
 
-		if (user != null) {
-    		EntityUser userE = userService.findUser(user.getUsername());
-    		form.setUserId(userE.getId());
-    	}
-    	
-        return "news-form";
+		form = newsService.findById(form.getId());
+    	model.addAttribute("news", form);
+
+    	List<PulldownIdName> genres = genreService.findAll();
+    	model.addAttribute("genres", genres);
+
+    	return "news-form";
     }
 
     @PutMapping("admin/news/edit/{id}")
-    public String updateNews(@Validated @ModelAttribute("news") NewsForm form, BindingResult result, Model model) {
+    public String updateNews(@AuthenticationPrincipal ItsUserDetails user, @RequestParam(name="page") int page, @RequestParam(name="all") Boolean fetchAll, @Validated @ModelAttribute("news") NewsForm form, BindingResult result, Model model) {
     	if (result.hasErrors()) {
-    		return showPostNews(null, form, model);
+    		return showEditNews(page, fetchAll, form, model);
     	}
     	
+    	form.setUserId(user.getId());
+    	NewsForm tForm = newsService.findById(form.getId());
+    	form.setCreatedAt(tForm.getCreatedAt());
     	newsService.registerNews(form);
     	
-        return "redirect:/news";
+        return "redirect:/news?auto=true&page=" + page + "&all=" + fetchAll;
     }
 
     @GetMapping("/admin/news/delete/{id}")

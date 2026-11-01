@@ -51,7 +51,9 @@ public class EntityNews {
 		information = form.getInformation();
 		genreId = form.getGenreId();
 		userId = form.getUserId();
-		validTill = form.getValidTill().atStartOfDay(ZoneId.of("Asia/Tokyo")).toOffsetDateTime();
+		if (form.getValidTill() != null) {
+			validTill = form.getValidTill().atStartOfDay(ZoneId.of("GMT")).toOffsetDateTime();
+		}
 		createdAt = form.getCreatedAt();
 	}
 

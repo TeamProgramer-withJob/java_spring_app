@@ -16,9 +16,9 @@
   </div>
 </div>
 
-<div id="news-container" th:attr="hx-get=@{/news/list}" hx-trigger="load" hx-swap="innerHTML">Loading ...</div>
+<div id="news-container" th:attr="hx-get=@{/news/list(page=${pageNo}, all=${all}, auto=${auto})}" hx-trigger="load" hx-swap="innerHTML">Loading ...</div>
 
-<div class="d-flex" style="margin-bottom:30px;" th:if="${#authorization.expression('isAuthenticated()') and #authorization.expression('hasRole(''ADMIN'')')}">
+<div class="d-flex" style="margin-bottom:30px;" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
 	<label class="ms-auto">新しいニュースを<span><a th:href="@{/admin/news}">投稿</a></span>します。</label>
 </div>
 <script>
@@ -52,6 +52,20 @@
         alert('Unable to load the news detail.');
     }
   });
+</script>
+<script th:inline="javascript">
+	const autoScroll = /*[[${auto}]]*/ false;
+	
+	window.addEventListener('htmx:afterSwap', function () {
+		  const target = document.getElementById('news-container');
+	
+		  if (autoScroll && target) {
+			  target.scrollIntoView({
+		          behavior: 'smooth',
+		          block: 'start'
+		      });
+		  }
+	});
 </script>
 <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.11/dist/htmx.min.js" 
       integrity="sha384-2OatzQy1H+Zd/IIrjr1TcuDGqLXeHhbooAyJY1KdQMKnr4LZ22k31GBLdYKHmVjg"

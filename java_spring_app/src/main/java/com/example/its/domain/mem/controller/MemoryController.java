@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/memories")
@@ -36,7 +37,11 @@ public class MemoryController {
     	model.addAttribute("page", pageObj);
 
     	int idxStart = Math.max(1, pageObj.getNumber());
-    	int idxEnd = Math.min(pageObj.getTotalPages(), idxStart+2);
+    	int idxEnd = idxStart + pageable.getPageSize();
+    	if (idxEnd > pageObj.getTotalPages()) {
+    		idxEnd = pageObj.getTotalPages();
+    		idxStart = Math.max(1, idxEnd - pageable.getPageSize());
+    	}
 
     	model.addAttribute("idxStart", idxStart);
     	model.addAttribute("idxEnd", idxEnd);
@@ -45,53 +50,59 @@ public class MemoryController {
     }
 
     @GetMapping("/new")
-    public String showNewMemoryForm(@ModelAttribute("data") MemoryForm form, Model model) {
+    public String showNewMemoryForm(@RequestParam(name="page", defaultValue="0") int page, @ModelAttribute("data") MemoryForm form, Model model) {
     	if (form.getAct() == null) {
     		form.setAct("new");
     	}
 //    	if (!model.containsAttribute("act")) {
 //        	model.addAttribute("act", "new");
 //    	}
-    	return "memories/creationForm";
+        model.addAttribute("pageNo", page);
+
+        return "memories/creationForm";
     }
     @GetMapping("/edit/{id}")
-    public String editMemoryPost(@PathVariable("id") int id, Model model) {
+    public String editMemoryPost(@PathVariable("id") int id, @RequestParam(name="page", defaultValue="0") int page, Model model) {
     	
     	MemoryForm data = memoService.find(id);
     	data.setAct("update");
     	model.addAttribute("data", data);
+        model.addAttribute("pageNo", page);
     	
-    	return showNewMemoryForm(data, model);
+    	return showNewMemoryForm(page, data, model);
     }
 
     @PostMapping("")
-    public String create(@AuthenticationPrincipal UserDetails user, @Validated @ModelAttribute("data") MemoryForm form, BindingResult bindingResult, Model model) {
+    public String create(@AuthenticationPrincipal UserDetails user, @RequestParam(name="page", defaultValue="0") int page, @Validated @ModelAttribute("data") MemoryForm form, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return showNewMemoryForm(form, model);
+            return showNewMemoryForm(page, form, model);
         }
         
         form.setUserId(userService.findUser(user.getUsername()).getId());
         memoService.save(form);
 
         if (form.getAct().equals("image")) {
-            return "redirect:/memories/" + form.getId();
+            return "redirect:/memories/" + form.getId() + "&page=" + page;
         } else {
-            return "redirect:/memories";
+            return "redirect:/memories" + "?page=" + page;
         }
     }
 
     @GetMapping("/image/{id}/add")
-    public String showAddImage(@PathVariable("id") int id, Model model) {
+    public String showAddImage(@PathVariable("id") int id, @RequestParam(name="page", defaultValue="0") int page, Model model) {
     	MemoryForm data = memoService.find(id);
     	data.setAct("image");
     	model.addAttribute("data", data);
+        model.addAttribute("pageNo", page);
 
-    	return showNewMemoryForm(data, model);
+    	return showNewMemoryForm(page, data, model);
     }
     @GetMapping("/image/delete/{id}")
-    public String deleteImage(@PathVariable("id") int id, Model model) {
+    public String deleteImage(@PathVariable("id") int id, @RequestParam(name="page", defaultValue="0") int page, Model model) {
     	int memoId = memoService.deleteImage(id);
-    	return showDetail(memoId, model);
+        model.addAttribute("pageNo", page);
+
+        return showDetail(memoId, page, model);
     }
     @GetMapping("/image/{id}")
     public ResponseEntity<byte[]> renderImage(@PathVariable("id") int id) {
@@ -109,20 +120,24 @@ public class MemoryController {
     }
 
     @PostMapping("/like/{memId}")
-    public String setThumbupCount(@AuthenticationPrincipal UserDetails user, @PathVariable("memId") int memId, Model model) {
+    public String setThumbupCount(@AuthenticationPrincipal UserDetails user, @PathVariable("memId") int memId, @RequestParam(name="page", defaultValue="0") int page, Model model) {
     	memoService.setThumbup(userService.findUser(user.getUsername()).getId(), memId, 1);
-        return showDetail(memId, model);
+        model.addAttribute("pageNo", page);
+
+        return showDetail(memId, page, model);
     }
 
     @GetMapping("/delete/{id}")
-    public String deletePostedMemory(@PathVariable("id") int id) {
+    public String deletePostedMemory(@PathVariable("id") int id, @RequestParam(name="page", defaultValue="0") int page) {
     	memoService.delete(id);
-    	return "redirect:/memories";
+    	return "redirect:/memories?page=" + page;
     }
 
     @GetMapping("/{id}")
-    public String showDetail(@PathVariable("id") int id, Model model) {
+    public String showDetail(@PathVariable("id") int id, @RequestParam(name="page", defaultValue="0") int page, Model model) {
         model.addAttribute("memo", memoService.find(id, true, true));
+        model.addAttribute("pageNo", page);
+        
         return "memories/detail";
     }
 

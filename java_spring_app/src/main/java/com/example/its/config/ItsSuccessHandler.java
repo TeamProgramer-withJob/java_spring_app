@@ -17,7 +17,8 @@ public class ItsSuccessHandler implements AuthenticationSuccessHandler {
 		ItsUserDetails user = (ItsUserDetails)auth.getPrincipal();
 		
 		if (user.isForcePwdChange()) {
-			response.sendRedirect("/change-password");
+//			response.sendRedirect("/change-password");
+			response.sendRedirect("/memories");
 			return;
 		} if (user.isAdmin()) {
 			response.sendRedirect("/news");

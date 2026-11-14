@@ -14,8 +14,8 @@
   <thead>
   <tr>
     <th width="20%">タイトル</th>
-    <th width="30%">詳細</th>
-    <th>画像</th>
+    <th width="40%">詳細</th>
+    <th>ファイル名</th>
     <th width="150px;"></th>
   </tr>
   </thead>
@@ -32,7 +32,8 @@
     </td>
     <td>
       <a href="./edit/id" th:href="@{/memories/edit/{id}(id=${memo.id}, (page=${page.number}))}" class="btn btn-warning">編集</a> 
-      <a href="./delete/id" th:href="@{/memories/delete/{id}(id=${memo.id}, (page=${page.number}))}" onclick="return confirm('本当に削除してもよろしいですか？');" 
+      <a href="./delete/id" th:href="@{/memories/delete/{id}(id=${memo.id}, (page=${page.number}))}" 
+         th:attr="data-title=${memo.title}" onclick="return confirm('本当に(' + dataset.title + ')を削除してもよろしいですか？');" 
    class="btn btn-danger">削除</a>
     </td>
   </tr>

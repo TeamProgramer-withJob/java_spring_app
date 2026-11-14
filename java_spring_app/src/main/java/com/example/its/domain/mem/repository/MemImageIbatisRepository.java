@@ -14,7 +14,7 @@ import java.util.Optional;
 @Mapper
 public interface MemImageIbatisRepository {
 
-    @Select("select id from mem_images where mem_id = #{id} order by created_at")
+    @Select("select id, filename, created_at from mem_images where mem_id = #{id} order by created_at")
     List<EntityMemImage> findByMemId(@Param("id") int id);
 
     @Insert("insert into mem_images (mem_id, filename, content_type, image) values (#{memId}, #{filename}, #{contentType}, #{image})")

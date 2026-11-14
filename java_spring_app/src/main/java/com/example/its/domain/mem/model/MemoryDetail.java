@@ -22,7 +22,7 @@ public class MemoryDetail {
 	private OffsetDateTime createdAt;
 	private OffsetDateTime lastUpdated;
 	
-	private List<Integer> imgIds = new ArrayList<Integer>();
+	private List<ImageMeta> imgIds = new ArrayList<ImageMeta>();
 	private List<Sentiment> thumbups = new ArrayList<Sentiment>();
 	
 	public MemoryDetail(EntityMemory entity) {
@@ -35,7 +35,7 @@ public class MemoryDetail {
 
 	public void addImages(List<EntityMemImage> images) {
 		for (EntityMemImage image: images) {
-			this.imgIds.add(image.getId());
+			this.imgIds.add(new ImageMeta(image));
 		}
 	}
 	public void addThumbups(List<EntitySentiment> thumbups) {

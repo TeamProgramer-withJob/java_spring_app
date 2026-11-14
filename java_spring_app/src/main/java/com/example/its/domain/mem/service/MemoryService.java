@@ -40,7 +40,11 @@ public class MemoryService {
 			
 			if (!images.isEmpty()) {
 				form.setImageId(images.get(0).getId());
-				form.setFilename(images.get(0).getFilename());
+				StringBuffer sb = new StringBuffer();
+				for (EntityMemImage img : images) {
+					sb.append(", " + img.getFilename());
+				}
+				form.setFilename(sb.substring(2));
 			}
 			
 			return form;

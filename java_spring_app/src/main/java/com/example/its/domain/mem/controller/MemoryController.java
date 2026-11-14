@@ -82,7 +82,7 @@ public class MemoryController {
         memoService.save(form);
 
         if (form.getAct().equals("image")) {
-            return "redirect:/memories/" + form.getId() + "&page=" + page;
+            return "redirect:/memories/" + form.getId() + "?page=" + page;
         } else {
             return "redirect:/memories" + "?page=" + page;
         }

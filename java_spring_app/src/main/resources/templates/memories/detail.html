@@ -28,14 +28,20 @@
                     <div class="col-sm-10" th:text="*{details}">（思い出詳細）</div>
                 </div>
             </li>
-            <li class="list-group-item py-3" th:if="${#lists.size(memo.imgIds) > 0}" th:each="imgId : ${memo.imgIds}">
-				<div style="vertical-align: top;">
-				    <img th:src="@{/memories/image/{imageId}(imageId=${imgId})}" style="width:640px; height:auto;" th:alt="|画像${imgId}|" />
-				    <a th:href="@{/memories/image/delete/{id}(id=${imgId}, page=${pageNo})}" onclick="return confirm('画像を削除してもよろしいですか?');">
-				      <button type="button" class="btn btn-danger">
-				        <i class="bi bi-trash"></i>削除
-				      </button>
-				    </a>
+            <li class="list-group-item py-3" th:if="${#lists.size(memo.imgIds) > 0}" th:each="imgMeta : ${memo.imgIds}">
+				<div class="d-flex align-items-center gap-3">
+				    <img th:src="@{/memories/image/{imageId}(imageId=${imgMeta.id})}" class="img-fluid" style="width:640px; height:auto; object-fit: cover;" th:alt="|${imgMeta.filename}|" />
+				    <div class="d-flex flex-column justify-center-between flex-grow-1">
+				      <div class="text-break">ファイル名： <span th:text="${imgMeta.filename}"></span></div>
+				      <div>
+				        <a th:href="@{/memories/image/delete/{id}(id=${imgMeta.id}, page=${pageNo})}" 
+				           th:attr="data-filename=${imgMeta.filename}" onclick="return confirm('画像<' + dataset.filename + '>を削除してもよろしいですか?');">
+				          <button type="button" class="btn btn-danger">
+				            <i class="bi bi-trash"></i>削除
+				          </button>
+				        </a>
+				      </div>
+				    </div>
 				</div>
             </li>
             <li class="list-group-item py-3">
